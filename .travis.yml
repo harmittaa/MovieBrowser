@@ -24,5 +24,4 @@ android:
 script:
   - "./gradlew spotlessCheck"
   - "./gradlew test"
-  - "./gradlew :library:clean :library:build"
   - "./gradlew :app:clean :app:build :app:connectedCheck -PdisablePreDex --stacktrace"
