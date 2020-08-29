@@ -82,4 +82,8 @@ dependencies {
 
     def moshi_version = "1.9.3"
     implementation "com.squareup.moshi:moshi:$moshi_version"
+
+    def okhttp_version = "4.8.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
 }
