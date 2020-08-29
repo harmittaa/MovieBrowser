@@ -18,10 +18,11 @@ android:
     # - tools
     # - platform-tools
     - build-tools-30.0.1
-    - android-29
-    - sys-img-x86-android-26
+    - android-30
+    - sys-img-x86-android-29
 
 script:
   - "./gradlew spotlessCheck"
-  - "./gradlew :library:clean :library:build :library:connectedCheck -PdisablePreDex --stacktrace"
+  - "./gradlew test"
+  - "./gradlew :library:clean :library:build"
   - "./gradlew :app:clean :app:build :app:connectedCheck -PdisablePreDex --stacktrace"
