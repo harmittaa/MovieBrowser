@@ -1,7 +1,28 @@
 package com.github.harmittaa.moviebrowser.domain
 
-data class MovieGenre(
+import androidx.room.Entity
+import com.squareup.moshi.JsonClass
+
+abstract class MovieGenre {
+    abstract val id: Int
+    abstract val name: String
+}
+
+@JsonClass(generateAdapter = true)
+data class MovieGenreDto(
     val id: Int,
-    val name: String,
-    val items: List<Movie>
-)
+    val name: String
+) {
+    fun toLocal() = MovieGenreLocal(
+        id = id,
+        name = name,
+        items = null
+    )
+}
+
+@Entity(tableName = "genre")
+data class MovieGenreLocal(
+    override val id: Int,
+    override val name: String,
+    var items: List<Movie>?
+) : MovieGenre()

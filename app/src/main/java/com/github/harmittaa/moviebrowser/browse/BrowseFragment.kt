@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.github.harmittaa.moviebrowser.databinding.FragmentBrowseBinding
 import com.github.harmittaa.moviebrowser.domain.Movie
-import com.github.harmittaa.moviebrowser.domain.MovieGenre
+import com.github.harmittaa.moviebrowser.domain.MovieGenreLocal
+import com.github.harmittaa.moviebrowser.network.Resource
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@ExperimentalCoroutinesApi
 class BrowseFragment : Fragment() {
     val viewModel: BrowseViewModel by viewModel()
     private val adapter = MovieGenreAdapter()
@@ -32,12 +35,41 @@ class BrowseFragment : Fragment() {
             changeFirst = !changeFirst
             val items = getData(changeFirst)
             adapter.submitList(items)
+            viewModel.getMovieCategories()
         }
+
+        bindViewModel()
+
         return binding.root
     }
 
-    fun getData(changeFirst: Boolean = false): ArrayList<MovieGenre> {
-        val movieGenres = arrayListOf<MovieGenre>()
+    private fun bindViewModel() {
+        viewModel.genres.observe(viewLifecycleOwner, { genres ->
+            when (genres) {
+                is Resource.Success -> {
+                    updateListWithCorrectNames(genres.data)
+                }
+            }
+        })
+    }
+
+    private fun updateListWithCorrectNames(genres: List<MovieGenreLocal>) {
+        var movieIdx = 0
+
+        genres.forEach {
+            val movieList = arrayListOf<Movie>()
+            repeat(20) {
+                movieIdx++
+                val movie = Movie(id = movieIdx, title = "This is movie $movieIdx", overview = "")
+                movieList += movie
+            }
+            it.items = movieList
+        }
+        adapter.submitList(genres)
+    }
+
+    fun getData(changeFirst: Boolean = false): ArrayList<MovieGenreLocal> {
+        val movieGenres = arrayListOf<MovieGenreLocal>()
         var movieIdx = 0
 
         for (a in 1..30) {
@@ -49,9 +81,9 @@ class BrowseFragment : Fragment() {
             }
 
             movieGenres += if (changeFirst && a == 1) {
-                MovieGenre(id = a, name = "Genre $a", items = listOf())
+                MovieGenreLocal(id = a, name = "Genre $a", items = listOf())
             } else {
-                MovieGenre(id = a, name = "Genre $a", items = movieList)
+                MovieGenreLocal(id = a, name = "Genre $a", items = movieList)
             }
         }
         return movieGenres

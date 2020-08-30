@@ -6,19 +6,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.harmittaa.moviebrowser.databinding.ItemMovieGenreBinding
-import com.github.harmittaa.moviebrowser.domain.MovieGenre
+import com.github.harmittaa.moviebrowser.domain.MovieGenreLocal
 
-class MovieGenreAdapter : ListAdapter<MovieGenre, MovieGenreAdapter.GenreViewHolder>(
+class MovieGenreAdapter : ListAdapter<MovieGenreLocal, MovieGenreAdapter.GenreViewHolder>(
     Companion
 ) {
     private val viewPool = RecyclerView.RecycledViewPool()
 
-    companion object : DiffUtil.ItemCallback<MovieGenre>() {
-        override fun areItemsTheSame(oldItem: MovieGenre, newItem: MovieGenre): Boolean {
+    companion object : DiffUtil.ItemCallback<MovieGenreLocal>() {
+        override fun areItemsTheSame(oldItem: MovieGenreLocal, newItem: MovieGenreLocal): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: MovieGenre, newItem: MovieGenre): Boolean {
+        override fun areContentsTheSame(oldItem: MovieGenreLocal, newItem: MovieGenreLocal): Boolean {
             return oldItem.items == newItem.items
         }
     }
@@ -37,7 +37,7 @@ class MovieGenreAdapter : ListAdapter<MovieGenre, MovieGenreAdapter.GenreViewHol
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            genre: MovieGenre,
+            genre: MovieGenreLocal,
             viewPool: RecyclerView.RecycledViewPool,
             adapter: MovieAdapter
         ) {
