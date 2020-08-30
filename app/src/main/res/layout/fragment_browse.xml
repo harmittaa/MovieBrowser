@@ -22,11 +22,68 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
-            android:src="@color/colorAccent"
+            android:src="@color/non_selection_item"
             app:imageUrl="@{viewModel.selectedMovie}"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/shadow_gradient"
+            app:layout_constraintBottom_toTopOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@id/movie_title_spacer" />
+
+        <Space
+            android:id="@+id/movie_title_spacer"
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toTopOf="@id/movie_title"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModel.selectedMovie.title}"
+            android:textColor="@color/selection_white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/movie_rating"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Project Power" />
+
+        <TextView
+            android:id="@+id/movie_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.selectedMovie.rating}"
+            android:textColor="@color/selection_white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="@id/movie_title"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/movie_title"
+            tools:text="6.9" />
+
+        <ImageView
+            android:id="@+id/movie_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:src="@drawable/ic_info"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/movie_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/movie_title" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -39,12 +96,13 @@
             android:id="@+id/genres_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal"
-            tools:listitem="@layout/item_genre_browser"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/browse_recycler"
-            app:layout_constraintTop_toBottomOf="@id/guideline" />
+            app:layout_constraintTop_toBottomOf="@id/guideline"
+            tools:listitem="@layout/item_genre_browser" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/browse_recycler"

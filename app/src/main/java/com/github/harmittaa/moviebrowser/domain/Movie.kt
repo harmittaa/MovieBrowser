@@ -9,7 +9,8 @@ data class Movie(
     val title: String,
     val overview: String,
     @Json(name = "backdrop_path") val backdropUrl: String,
-    @Json(name = "poster_path") val posterUrl: String
+    @Json(name = "poster_path") val posterUrl: String,
+    @Json(name = "vote_average") val rating: String
 ) {
     fun getBackdropPath() = "https://image.tmdb.org/t/p/w780/$backdropUrl"
     fun getPosterPath() = "https://image.tmdb.org/t/p/w780/$posterUrl"

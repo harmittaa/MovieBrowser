@@ -19,5 +19,8 @@ interface MovieApi {
     suspend fun getMoviesForGenre(
         @Query("with_genres") genre: Int,
         @Query("vote_count.gte") count: Int = 500
+/*
+        @Query("sort_by") arg: String = "vote_average.desc",
+*/
     ): DiscoverEnvelope
 }

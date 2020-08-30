@@ -60,6 +60,7 @@ class BrowseViewModel(val movieRepo: MovieRepository) : ViewModel(), MovieClickL
                     Timber.d("Genre ${genre.name} has ${genre.items} first being ${genre.items?.first() ?: "DOESNT EXIST"}")
                 }
                 emit(genres)
+                _selectedMovie.value = genres.data?.first()?.items?.first()
             }
         }
     }
