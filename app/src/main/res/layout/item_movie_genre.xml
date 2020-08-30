@@ -14,16 +14,21 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/colorPrimary">
+        android:layout_height="60dp">
 
         <TextView
             android:id="@+id/genre_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="8dp"
+            android:background="@drawable/movie_background"
+            android:gravity="center"
+            android:maxWidth="120dp"
             android:text="@{genre.name}"
+            android:textAlignment="center"
+            android:textColor="@color/selection_white"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/movies_recyclerview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Science Fiction" />
@@ -38,7 +43,5 @@
             app:layout_constraintStart_toEndOf="@id/genre_header"
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_movie" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -30,7 +30,9 @@ class BrowseFragment : Fragment() {
             viewModel = this@BrowseFragment.viewModel
             lifecycleOwner = this@BrowseFragment.viewLifecycleOwner
             browseRecycler.adapter = this@BrowseFragment.movieBrowseAdapter
+            browseRecycler.addItemDecoration(MovieItemDecorator())
             genresRecycler.adapter = this@BrowseFragment.genreAdapter
+            genresRecycler.addItemDecoration(GenreItemDecorator())
         }
 
         bindViewModel()

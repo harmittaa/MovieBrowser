@@ -49,6 +49,7 @@ class MovieBrowseAdapter(private val clickListener: MovieClickListener) :
             binding.apply {
                 this.moviesRecyclerview.setRecycledViewPool(viewPool)
                 this.moviesRecyclerview.adapter = adapter
+                // this.moviesRecyclerview.addItemDecoration(GenreItemDecorator())
                 this.genre = genre
             }
         }

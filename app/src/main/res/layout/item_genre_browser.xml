@@ -17,8 +17,8 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:background="@color/colorAccent"
+        android:layout_height="30dp"
+        android:background="@drawable/genre_rounded_corners"
         android:onClick="@{() -> clickListener.onGenreClicked(genre)}">
 
         <TextView
@@ -26,8 +26,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="8dp"
+            android:layout_marginHorizontal="16dp"
             android:text="@{genre.name}"
+            android:textColor="@color/selection_white"
             tools:text="Science Fiction" />
 
     </LinearLayout>

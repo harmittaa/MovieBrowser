@@ -15,30 +15,41 @@
 
     </data>
 
-
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:background="@color/colorPrimary"
-        android:onClick="@{() -> clickListener.onMovieClicked(movie)}"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <ImageView
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="8dp"
-            android:contentDescription="@string/star"
-            android:src="@drawable/ic_star" />
+            android:layout_height="60dp"
+            android:background="@drawable/movie_background"
+            android:onClick="@{() -> clickListener.onMovieClicked(movie)}"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
-            android:text="@{movie.title}"
-            android:textColor="@color/white"
-            tools:text="Project Power" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_star" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="@{movie.title}"
+                android:textAlignment="center"
+                android:textColor="@color/selection_white"
+                tools:text="Project Power" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="8dp"
+            android:layout_height="match_parent" />
     </LinearLayout>
 </layout>
