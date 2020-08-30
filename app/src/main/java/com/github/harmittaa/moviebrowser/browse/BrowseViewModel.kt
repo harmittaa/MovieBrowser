@@ -29,8 +29,8 @@ interface MovieClickListener {
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class BrowseViewModel(val movieRepo: MovieRepository) : ViewModel(), MovieClickListener {
 
-    private val _genres: MutableLiveData<Resource<List<MovieGenreLocal>>> = MutableLiveData()
-    val genres: LiveData<Resource<List<MovieGenreLocal>>> = _genres
+    private val _genres: MutableLiveData<Resource<List<MovieGenreLocal>>> =
+        MutableLiveData(Resource.Loading)
 
     private val _selectedMovie: MutableLiveData<Movie> = MutableLiveData()
     val selectedMovie: LiveData<Movie> = _selectedMovie
@@ -45,7 +45,7 @@ class BrowseViewModel(val movieRepo: MovieRepository) : ViewModel(), MovieClickL
         }
     }
 
-    val moviesOfCategory = genres.switchMap { genres ->
+    val moviesOfCategory = _genres.switchMap { genres ->
         if (genres is Resource.Loading || genres is Resource.Error) {
             liveData { emptyList<Movie>() }
         } else {
