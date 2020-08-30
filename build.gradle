@@ -13,8 +13,6 @@ buildscript {
         def spoless_version = "5.1.0"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:$spoless_version"
 
-
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
