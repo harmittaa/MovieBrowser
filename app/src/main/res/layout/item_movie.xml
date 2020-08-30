@@ -9,6 +9,10 @@
             name="movie"
             type="com.github.harmittaa.moviebrowser.domain.Movie" />
 
+        <variable
+            name="clickListener"
+            type="com.github.harmittaa.moviebrowser.browse.MovieClickListener" />
+
     </data>
 
 
@@ -16,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:background="@color/colorPrimary"
+        android:onClick="@{() -> clickListener.onMovieClicked(movie)}"
         android:orientation="horizontal">
 
         <ImageView

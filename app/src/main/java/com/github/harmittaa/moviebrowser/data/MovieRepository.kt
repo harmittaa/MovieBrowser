@@ -17,6 +17,10 @@ val repositoryModule = module {
 class MovieRepository(
     val remote: MovieApi
 ) {
-    val store =
+    val genreStore =
         StoreBuilder.from(Fetcher.of { remote.getGenres().genres.map { it.toLocal() } }).build()
+
+    fun getMoviesForCategory(id: Int) =
+        StoreBuilder.from(Fetcher.of { remote.getMoviesForGenre(id).results })
+            .build()
 }
