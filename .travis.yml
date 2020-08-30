@@ -1,0 +1,33 @@
+language: android
+dist: trusty
+jdk: oraclejdk8
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
+
+before_install:
+  - yes | sdkmanager "platforms;android-29"
+  - yes | sdkmanager "emulator" "tools" "platform-tools"
+  - yes | sdkmanager --licenses
+  - yes | sdkmanager "build-tools;30.0.1"
+
+
+android:
+  components:
+    - build-tools-30.0.1
+    - android-29
+    - sys-img-x86-android-29
+  licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+
+script:
+  - "./gradlew spotlessCheck"
+  - "./gradlew test"
+  - "./gradlew :app:clean :app:build"
