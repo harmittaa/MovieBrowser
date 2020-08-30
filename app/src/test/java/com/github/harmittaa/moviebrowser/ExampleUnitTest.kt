@@ -1,6 +1,10 @@
 package com.github.harmittaa.moviebrowser
 
+<<<<<<< HEAD
 import junit.framework.TestCase.assertEquals
+=======
+import org.junit.Assert.assertEquals
+>>>>>>> main
 import org.junit.Test
 
 /**
