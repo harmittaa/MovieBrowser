@@ -18,8 +18,8 @@ android:
     # - tools
     # - platform-tools
     - build-tools-30.0.1
-    - android-30
-    - sys-img-x86-android-29
+    - android-27
+    - sys-img-x86-android-27
 
 script:
   - "./gradlew spotlessCheck"
