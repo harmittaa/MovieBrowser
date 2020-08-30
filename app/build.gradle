@@ -6,7 +6,6 @@ apply plugin: 'kotlin-kapt'
 apply from: "$project.rootDir/spotless.gradle"
 
 
-
 android {
     compileSdkVersion 29
     buildToolsVersion "30.0.1"
@@ -22,9 +21,24 @@ android {
     }
 
     buildTypes {
+        debug {
+            try {
+                minifyEnabled false
+                buildConfigField "String", "TMDB_URL", "\"https://api.themoviedb.org/3/\""
+                buildConfigField "String", "TMDB_KEY", tmdb_api_key
+                debuggable true
+            } catch (e) {
+                // add gradle.properties file with the following property:
+                // tmdb_api_key = "YOUR_API_KEY"
+                throw e
+            }
+
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "TMDB_URL", "\"https://api.themoviedb.org/3/\""
+            buildConfigField "String", "TMDB_KEY", tmdb_api_key
         }
     }
 
@@ -40,7 +54,6 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
-
 }
 
 dependencies {
@@ -84,13 +97,23 @@ dependencies {
     // Koin AndroidX Fragment features
     implementation "org.koin:koin-androidx-fragment:$koin_version"
 
-    def room_version ="2.2.5"
+    def room_version = "2.2.5"
     implementation "androidx.room:room-runtime:$room_version"
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    def retrofit_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
+    def moshi_version = "1.9.3"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
+    def okhttp_version = "4.8.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 }
