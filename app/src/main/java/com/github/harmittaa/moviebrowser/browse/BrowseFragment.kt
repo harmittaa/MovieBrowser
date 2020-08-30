@@ -14,6 +14,7 @@ class BrowseFragment : Fragment() {
     val viewModel: BrowseViewModel by viewModel()
     private val adapter = MovieGenreAdapter()
     var items = getData()
+    var changeFirst = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +29,8 @@ class BrowseFragment : Fragment() {
         adapter.submitList(items)
 
         binding.refreshButton.setOnClickListener {
-            val items = getData(true)
+            changeFirst = !changeFirst
+            val items = getData(changeFirst)
             adapter.submitList(items)
         }
         return binding.root
