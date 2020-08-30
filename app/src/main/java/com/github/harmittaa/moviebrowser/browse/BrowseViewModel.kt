@@ -24,16 +24,20 @@ val viewModelModule = module {
 
 interface MovieClickListener {
     fun onMovieClicked(movie: Movie)
+    fun onGenreClicked(genre: MovieGenreLocal)
 }
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class BrowseViewModel(val movieRepo: MovieRepository) : ViewModel(), MovieClickListener {
 
-    private val _genres: MutableLiveData<Resource<List<MovieGenreLocal>>> =
-        MutableLiveData(Resource.Loading)
+    private val _genres: MutableLiveData<Resource<List<MovieGenreLocal>>> = MutableLiveData()
+    val genres: LiveData<Resource<List<MovieGenreLocal>>> = _genres
 
     private val _selectedMovie: MutableLiveData<Movie> = MutableLiveData()
     val selectedMovie: LiveData<Movie> = _selectedMovie
+
+    private val _selectedGenre: MutableLiveData<Int> = MutableLiveData()
+    val selectedGenre: LiveData<Int> = _selectedGenre
 
     init {
         viewModelScope.launch {
@@ -62,5 +66,9 @@ class BrowseViewModel(val movieRepo: MovieRepository) : ViewModel(), MovieClickL
 
     override fun onMovieClicked(movie: Movie) {
         _selectedMovie.value = movie
+    }
+
+    override fun onGenreClicked(genre: MovieGenreLocal) {
+        _selectedGenre.value = _genres.value?.data?.indexOf(genre)
     }
 }

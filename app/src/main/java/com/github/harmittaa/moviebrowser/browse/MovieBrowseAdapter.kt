@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.harmittaa.moviebrowser.databinding.ItemMovieGenreBinding
 import com.github.harmittaa.moviebrowser.domain.MovieGenreLocal
 
-class MovieGenreAdapter(private val clickListener: MovieClickListener) :
-    ListAdapter<MovieGenreLocal, MovieGenreAdapter.GenreViewHolder>(
+class MovieBrowseAdapter(private val clickListener: MovieClickListener) :
+    ListAdapter<MovieGenreLocal, MovieBrowseAdapter.GenreViewHolder>(
         Companion
     ) {
     private val viewPool = RecyclerView.RecycledViewPool()
