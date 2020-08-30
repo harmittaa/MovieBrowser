@@ -11,18 +11,25 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 
+before_install:
+  - yes | sdkmanager "platforms;android-29"
+  - yes | sdkmanager "emulator" "tools" "platform-tools"
+  - yes | sdkmanager --licenses
+  - yes | sdkmanager "build-tools;30.0.1"
+
 
 android:
   components:
-    - tools
-    - platform-tools
-    #- build-tools-30.0.1
+    - build-tools-30.0.1
     - android-29
     - sys-img-x86-android-29
   licenses:
     - 'android-sdk-preview-license-52d11cd2'
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
+
+
+
 
 script:
   - "./gradlew spotlessCheck"
