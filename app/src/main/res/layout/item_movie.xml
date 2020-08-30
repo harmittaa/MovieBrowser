@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movie"
+            type="com.github.harmittaa.moviebrowser.domain.Movie" />
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/star"
+            android:src="@drawable/ic_star" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:text="@{movie.title}"
+            android:textColor="@color/white"
+            tools:text="Project Power" />
+
+    </LinearLayout>
+</layout>
