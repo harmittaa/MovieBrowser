@@ -1,5 +1,7 @@
 package com.github.harmittaa.moviebrowser.network
 
+// from
+// https://github.com/dropbox/Store/blob/main/app/src/main/java/com/dropbox/android/sample/utils/Lce.kt
 sealed class Resource<out T> {
 
     open val data: T? = null

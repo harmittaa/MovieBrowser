@@ -15,12 +15,6 @@ import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
-import org.koin.dsl.module
-
-@ExperimentalCoroutinesApi
-val viewModelModule = module {
-    factory { BrowseViewModel(genreUseCase = get(), movieUseCase = get()) }
-}
 
 interface MovieClickListener {
     fun onMovieClicked(movie: Movie)

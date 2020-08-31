@@ -13,6 +13,7 @@ class MovieBrowseAdapter(private val clickListener: MovieClickListener) :
     ListAdapter<MovieGenreLocal, MovieBrowseAdapter.GenreViewHolder>(
         Companion
     ) {
+    private val viewPool = RecyclerView.RecycledViewPool()
 
     companion object : DiffUtil.ItemCallback<MovieGenreLocal>() {
         override fun areItemsTheSame(oldItem: MovieGenreLocal, newItem: MovieGenreLocal): Boolean {
@@ -37,7 +38,7 @@ class MovieBrowseAdapter(private val clickListener: MovieClickListener) :
         holder.bind(getItem(position), MovieAdapter(clickListener))
     }
 
-    class GenreViewHolder(private val binding: ItemMovieGenreBinding) :
+    inner class GenreViewHolder(private val binding: ItemMovieGenreBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
@@ -47,6 +48,7 @@ class MovieBrowseAdapter(private val clickListener: MovieClickListener) :
             adapter.submitList(genre.items)
             binding.apply {
                 this.moviesRecyclerview.adapter = adapter
+                this.moviesRecyclerview.setRecycledViewPool(viewPool)
                 this.genre = genre
             }
         }

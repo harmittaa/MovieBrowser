@@ -1,9 +1,9 @@
 package com.github.harmittaa.moviebrowser.application
 
 import android.app.Application
-import com.github.harmittaa.moviebrowser.browse.viewModelModule
-import com.github.harmittaa.moviebrowser.data.uc.storeRepositoryModule
-import com.github.harmittaa.moviebrowser.data.uc.useCaseModule
+import com.github.harmittaa.moviebrowser.browse.di.viewModelModule
+import com.github.harmittaa.moviebrowser.data.di.storeRepositoryModule
+import com.github.harmittaa.moviebrowser.data.di.useCaseModule
 import com.github.harmittaa.moviebrowser.network.networkModule
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,7 +25,7 @@ class MovieBrowserApplication : Application() {
         Timber.plant(Timber.DebugTree())
         startKoin {
             androidContext(this@MovieBrowserApplication)
-            modules(listOf(networkModule, /*repositoryModule,*/ viewModelModule, storeRepositoryModule, useCaseModule))
+            modules(listOf(networkModule, viewModelModule, storeRepositoryModule, useCaseModule))
         }
     }
 }

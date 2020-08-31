@@ -41,7 +41,7 @@ fun provideRetrofit(
         .build()
 }
 
-fun provideMoshi(): Moshi {
+private fun provideMoshi(): Moshi {
     return Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
@@ -51,7 +51,7 @@ private fun provideMoshiConverterFactory(moshi: Moshi): MoshiConverterFactory {
     return MoshiConverterFactory.create(moshi)
 }
 
-fun provideOkHttpClient(
+private fun provideOkHttpClient(
     authInterceptor: AuthInterceptor,
     loggingInterceptor: HttpLoggingInterceptor
 ): OkHttpClient {
@@ -59,9 +59,9 @@ fun provideOkHttpClient(
         .addInterceptor(loggingInterceptor).build()
 }
 
-fun provideMovieApi(retrofit: Retrofit): MovieApi = retrofit.create(MovieApi::class.java)
+private fun provideMovieApi(retrofit: Retrofit): MovieApi = retrofit.create(MovieApi::class.java)
 
-class AuthInterceptor : Interceptor {
+private class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain) = chain.proceed(
         chain.request().newBuilder().addHeader("Authorization", "Bearer ${BuildConfig.TMDB_KEY}")
             .build()
