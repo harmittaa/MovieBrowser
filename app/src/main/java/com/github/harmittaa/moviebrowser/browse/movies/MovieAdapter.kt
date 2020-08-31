@@ -1,14 +1,17 @@
-package com.github.harmittaa.moviebrowser.browse
+package com.github.harmittaa.moviebrowser.browse.movies
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.github.harmittaa.moviebrowser.browse.MovieClickListener
 import com.github.harmittaa.moviebrowser.databinding.ItemMovieBinding
 import com.github.harmittaa.moviebrowser.domain.Movie
 
-class MovieAdapter(private val clickListener: MovieClickListener) : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(Companion) {
+class MovieAdapter(private val clickListener: MovieClickListener) : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(
+    Companion
+) {
 
     companion object : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {

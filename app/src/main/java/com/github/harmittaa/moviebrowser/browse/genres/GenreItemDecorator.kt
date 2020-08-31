@@ -1,4 +1,4 @@
-package com.github.harmittaa.moviebrowser.browse
+package com.github.harmittaa.moviebrowser.browse.genres
 
 import android.graphics.Rect
 import android.view.View
@@ -6,9 +6,9 @@ import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.RecyclerView
 import com.github.harmittaa.moviebrowser.R
 
-class MovieItemDecorator(
-    @DimenRes private var topBottomMargin: Int = R.dimen.margin_8,
-    @DimenRes private var bottomMargin: Int = R.dimen.margin_4
+class GenreItemDecorator(
+    @DimenRes private var startEndMargin: Int = R.dimen.margin_8,
+    @DimenRes private var rightMargin: Int = R.dimen.margin_4
 ) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
@@ -19,14 +19,14 @@ class MovieItemDecorator(
     ) {
 
         if (parent.getChildAdapterPosition(view) == 0) {
-            outRect.top = parent.resources.getDimensionPixelSize(topBottomMargin)
-            outRect.bottom = parent.resources.getDimensionPixelSize(bottomMargin)
+            outRect.left = parent.resources.getDimensionPixelSize(startEndMargin)
+            outRect.right = parent.resources.getDimensionPixelSize(rightMargin)
             return
         } else if (parent.getChildAdapterPosition(view) + 1 == state.itemCount) {
-            outRect.bottom = parent.resources.getDimensionPixelSize(topBottomMargin)
+            outRect.right = parent.resources.getDimensionPixelSize(startEndMargin)
             return
         }
 
-        outRect.bottom = parent.resources.getDimensionPixelSize(bottomMargin)
+        outRect.right = parent.resources.getDimensionPixelSize(rightMargin)
     }
 }

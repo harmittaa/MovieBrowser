@@ -3,11 +3,12 @@ package com.github.harmittaa.moviebrowser.browse
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import com.dropbox.android.external.store4.fresh
-import com.github.harmittaa.moviebrowser.data.MovieRepository
+import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
+import com.github.harmittaa.moviebrowser.data.uc.MovieUseCase
 import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.domain.MovieGenreLocal
 import com.github.harmittaa.moviebrowser.network.Resource
@@ -15,11 +16,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
 import org.koin.dsl.module
-import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 val viewModelModule = module {
-    factory { BrowseViewModel(movieRepo = get()) }
+    factory { BrowseViewModel(genreUseCase = get(), movieUseCase = get()) }
 }
 
 interface MovieClickListener {
@@ -28,7 +28,10 @@ interface MovieClickListener {
 }
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-class BrowseViewModel(val movieRepo: MovieRepository) : ViewModel(), MovieClickListener {
+class BrowseViewModel(
+    val genreUseCase: GenreUseCase,
+    val movieUseCase: MovieUseCase
+) : ViewModel(), MovieClickListener {
 
     private val _genres: MutableLiveData<Resource<List<MovieGenreLocal>>> = MutableLiveData()
     val genres: LiveData<Resource<List<MovieGenreLocal>>> = _genres
@@ -36,32 +39,21 @@ class BrowseViewModel(val movieRepo: MovieRepository) : ViewModel(), MovieClickL
     private val _selectedMovie: MutableLiveData<Movie> = MutableLiveData()
     val selectedMovie: LiveData<Movie> = _selectedMovie
 
+    val moviesOfCategory = _genres.switchMap { genres ->
+        if (genres is Resource.Loading || genres is Resource.Error) {
+            return@switchMap liveData { emit(genres) }
+        }
+
+        movieUseCase.getMovies((genres as Resource.Success).data)
+            .asLiveData(viewModelScope.coroutineContext)
+    }
+
     private val _selectedGenre: MutableLiveData<Int> = MutableLiveData()
     val selectedGenre: LiveData<Int> = _selectedGenre
 
     init {
         viewModelScope.launch {
-            _genres.value = try {
-                Resource.Success(movieRepo.genreStore.fresh(""))
-            } catch (e: Exception) {
-                Resource.Error(e)
-            }
-        }
-    }
-
-    val moviesOfCategory = _genres.switchMap { genres ->
-        if (genres is Resource.Loading || genres is Resource.Error) {
-            liveData { emptyList<Movie>() }
-        } else {
-            liveData {
-                genres.data?.forEach { genre ->
-                    val items = movieRepo.getMoviesForCategory(genre.id).fresh(genre.id)
-                    genre.items = items
-                    Timber.d("Genre ${genre.name} has ${genre.items} first being ${genre.items?.first() ?: "DOESNT EXIST"}")
-                }
-                emit(genres)
-                _selectedMovie.value = genres.data?.first()?.items?.first()
-            }
+            _genres.value = genreUseCase.getGenres()
         }
     }
 
@@ -71,5 +63,9 @@ class BrowseViewModel(val movieRepo: MovieRepository) : ViewModel(), MovieClickL
 
     override fun onGenreClicked(genre: MovieGenreLocal) {
         _selectedGenre.value = _genres.value?.data?.indexOf(genre)
+    }
+
+    fun listRefreshed() {
+        _selectedMovie.value = moviesOfCategory.value?.data?.first()?.items?.first()
     }
 }

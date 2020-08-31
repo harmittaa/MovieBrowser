@@ -1,15 +1,18 @@
-package com.github.harmittaa.moviebrowser.browse
+package com.github.harmittaa.moviebrowser.browse.movies
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.github.harmittaa.moviebrowser.databinding.ItemGenreBrowserBinding
+import com.github.harmittaa.moviebrowser.browse.MovieClickListener
+import com.github.harmittaa.moviebrowser.databinding.ItemMovieGenreBinding
 import com.github.harmittaa.moviebrowser.domain.MovieGenreLocal
 
-class GenreAdapter(private val clickListener: MovieClickListener) :
-    ListAdapter<MovieGenreLocal, GenreAdapter.GenreViewHolder>(Companion) {
+class MovieBrowseAdapter(private val clickListener: MovieClickListener) :
+    ListAdapter<MovieGenreLocal, MovieBrowseAdapter.GenreViewHolder>(
+        Companion
+    ) {
 
     companion object : DiffUtil.ItemCallback<MovieGenreLocal>() {
         override fun areItemsTheSame(oldItem: MovieGenreLocal, newItem: MovieGenreLocal): Boolean {
@@ -26,24 +29,25 @@ class GenreAdapter(private val clickListener: MovieClickListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemGenreBrowserBinding.inflate(inflater, parent, false)
+        val binding = ItemMovieGenreBinding.inflate(inflater, parent, false)
         return GenreViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
-        holder.bind(getItem(position), clickListener)
+        holder.bind(getItem(position), MovieAdapter(clickListener))
     }
 
-    class GenreViewHolder(private val binding: ItemGenreBrowserBinding) :
+    class GenreViewHolder(private val binding: ItemMovieGenreBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
             genre: MovieGenreLocal,
-            clickListener: MovieClickListener
+            adapter: MovieAdapter
         ) {
+            adapter.submitList(genre.items)
             binding.apply {
+                this.moviesRecyclerview.adapter = adapter
                 this.genre = genre
-                this.clickListener = clickListener
             }
         }
     }
