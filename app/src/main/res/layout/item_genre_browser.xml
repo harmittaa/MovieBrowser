@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/genre_height"
         android:background="@drawable/genre_rounded_corners"
         android:onClick="@{() -> clickListener.onGenreClicked(genre)}">
 

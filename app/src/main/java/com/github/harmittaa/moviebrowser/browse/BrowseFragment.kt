@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.github.harmittaa.moviebrowser.browse.genres.GenreAdapter
 import com.github.harmittaa.moviebrowser.browse.genres.GenreItemDecorator
 import com.github.harmittaa.moviebrowser.browse.movies.MovieBrowseAdapter
@@ -13,7 +14,9 @@ import com.github.harmittaa.moviebrowser.databinding.FragmentBrowseBinding
 import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.android.synthetic.main.fragment_browse.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 class BrowseFragment : Fragment() {
@@ -54,8 +57,11 @@ class BrowseFragment : Fragment() {
 
         viewModel.moviesOfCategory.observe(viewLifecycleOwner, { movies ->
             if (movies is Resource.Success) {
-                movieBrowseAdapter.submitList(movies.data)
-                viewModel.listRefreshed()
+                lifecycleScope.launch {
+                    Timber.d("viewModel.moviesOfCategory.observe!")
+                    movieBrowseAdapter.submitList(movies.data)
+                    viewModel.listRefreshed()
+                }
             }
         })
 

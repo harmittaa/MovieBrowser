@@ -7,6 +7,7 @@ import com.github.harmittaa.moviebrowser.domain.MovieGenreLocal
 import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 
 class MovieUseCase(val repository: Store<Int, List<Movie>>) {
 
@@ -17,6 +18,7 @@ class MovieUseCase(val repository: Store<Int, List<Movie>>) {
                     genre.items = repository.fresh(genre.id)
                     genre
                 }
+                Timber.d("EMIT FROM USE CASE!")
                 emit(Resource.Success(mapped))
             } catch (e: Exception) {
                 emit(Resource.Error(e))
