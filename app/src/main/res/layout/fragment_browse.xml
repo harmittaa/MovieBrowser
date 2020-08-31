@@ -70,7 +70,8 @@
             app:layout_constraintBottom_toTopOf="@id/guideline"
             app:layout_constraintEnd_toEndOf="@id/movie_title"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/movie_title" />
+            app:layout_constraintStart_toStartOf="@id/movie_title"
+            app:visibleGone="@{!viewModel.showLoading.booleanValue()}" />
 
         <TextView
             android:id="@+id/movie_rating"
@@ -93,6 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_8"
+            android:contentDescription="@string/info"
             android:src="@drawable/ic_info"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/movie_title"
@@ -119,16 +121,15 @@
             tools:listitem="@layout/item_genre_browser" />
 
         <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+            android:id="@+id/browse_progress_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
             android:indeterminate="true"
             app:layout_constraintTop_toBottomOf="@id/genres_recycler"
             app:spb_color="@color/non_selection_genre"
             app:spb_mirror_mode="false"
             app:spb_progressiveStart_activated="true"
-            android:id="@+id/browse_progress_bar"
-            android:layout_marginTop="@dimen/margin_4"
-            app:visibleGone="@{viewModel.showLoading.booleanValue()}"
             app:spb_progressiveStart_speed="1.5"
             app:spb_progressiveStop_speed="3.4"
             app:spb_reversed="false"
@@ -136,8 +137,7 @@
             app:spb_speed="2.0"
             app:spb_stroke_separator_length="4dp"
             app:spb_stroke_width="4dp"
-            />
-
+            app:visibleGone="@{viewModel.showLoading.booleanValue()}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/browse_recycler"

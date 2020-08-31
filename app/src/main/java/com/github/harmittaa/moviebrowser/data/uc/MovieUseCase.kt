@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
 
-class MovieUseCase(val repository: Store<Int, List<Movie>>) {
+class MovieUseCase(private val repository: Store<Int, List<Movie>>) {
 
     fun getMovies(genres: List<MovieGenreLocal>): Flow<Resource<List<MovieGenreLocal>>> {
         return flow {

@@ -43,6 +43,7 @@ class BrowseFragment : Fragment() {
         }
 
         bindViewModel()
+        viewModel.onCreateView()
         return binding.root
     }
 

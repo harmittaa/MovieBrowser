@@ -10,6 +10,7 @@ val useCaseModule = module {
     factory { GenreUseCase(repository = get(named("genreRepo"))) }
     factory { MovieUseCase(repository = get(named("movieRepo"))) }
 }
+
 val storeRepositoryModule = module {
     single(named("genreRepo")) { Repository.provideGenreRepository(api = get()) }
     single(named("movieRepo")) { Repository.provideMovieRepository(api = get()) }

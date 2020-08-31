@@ -50,7 +50,7 @@ class BrowseViewModel(
     private val _selectedGenre: MutableLiveData<Int> = MutableLiveData()
     val selectedGenre: LiveData<Int> = _selectedGenre
 
-    init {
+    fun onCreateView() {
         viewModelScope.launch {
             _genres.value = Resource.Loading
             _genres.value = genreUseCase.getGenres()
