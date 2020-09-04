@@ -21,7 +21,7 @@ class GenreAdapter(private val clickListener: MovieClickListener) :
             oldItem: MovieGenreLocal,
             newItem: MovieGenreLocal
         ): Boolean {
-            return oldItem.items == newItem.items
+            return oldItem.movies == newItem.movies
         }
     }
 

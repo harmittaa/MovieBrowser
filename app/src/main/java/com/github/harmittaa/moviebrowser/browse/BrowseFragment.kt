@@ -1,45 +1,44 @@
 package com.github.harmittaa.moviebrowser.browse
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import com.github.harmittaa.moviebrowser.browse.genres.GenreAdapter
-import com.github.harmittaa.moviebrowser.browse.genres.GenreItemDecorator
-import com.github.harmittaa.moviebrowser.browse.movies.MovieBrowseAdapter
-import com.github.harmittaa.moviebrowser.browse.movies.MovieItemDecorator
+import com.airbnb.epoxy.EpoxyController
+import com.airbnb.epoxy.stickyheader.StickyHeaderLinearLayoutManager
 import com.github.harmittaa.moviebrowser.databinding.FragmentBrowseBinding
+import com.github.harmittaa.moviebrowser.epoxy.GenresController
+import com.github.harmittaa.moviebrowser.epoxy.MoviesController
 import com.github.harmittaa.moviebrowser.network.Resource
-import kotlinx.android.synthetic.main.fragment_browse.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 class BrowseFragment : Fragment() {
-    val viewModel: BrowseViewModel by viewModel()
-    lateinit var movieBrowseAdapter: MovieBrowseAdapter
-    lateinit var genreAdapter: GenreAdapter
+    private val viewModel: BrowseViewModel by viewModel()
+    private lateinit var genresController: GenresController
+    private lateinit var moviesController: MoviesController
+    private lateinit var binding: FragmentBrowseBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        val binding = FragmentBrowseBinding.inflate(inflater, container, false)
-        movieBrowseAdapter = MovieBrowseAdapter(viewModel)
-        genreAdapter = GenreAdapter(viewModel)
+        binding = FragmentBrowseBinding.inflate(inflater, container, false)
+        genresController = GenresController(viewModel)
+        moviesController = MoviesController()
         binding.apply {
             viewModel = this@BrowseFragment.viewModel
             lifecycleOwner = this@BrowseFragment.viewLifecycleOwner
-            browseRecycler.adapter = this@BrowseFragment.movieBrowseAdapter
-            browseRecycler.addItemDecoration(MovieItemDecorator())
-            genresRecycler.adapter = this@BrowseFragment.genreAdapter
-            genresRecycler.addItemDecoration(GenreItemDecorator())
+            genresRecycler.setController(genresController)
+            moviesRecycler.layoutManager =
+                StickyHeaderLinearLayoutManager(this@BrowseFragment.requireContext())
+            moviesRecycler.setController(moviesController)
         }
 
         bindViewModel()
@@ -51,23 +50,32 @@ class BrowseFragment : Fragment() {
         viewModel.genres.observe(viewLifecycleOwner, { genres ->
             when (genres) {
                 is Resource.Success -> {
-                    genreAdapter.submitList(genres.data)
+                    // genresController.genres = genres.data
+                    // genreAdapter.submitList(genres.data)
+                    // genresController.genres = genres.data
                 }
             }
         })
 
         viewModel.moviesOfCategory.observe(viewLifecycleOwner, { movies ->
             if (movies is Resource.Success) {
-                lifecycleScope.launch {
-                    Timber.d("viewModel.moviesOfCategory.observe!")
-                    movieBrowseAdapter.submitList(movies.data)
-                    viewModel.listRefreshed()
-                }
+                Timber.d("viewModel.moviesOfCategory.observe!")
+
+                val handlerThread = HandlerThread("epoxy")
+                handlerThread.start()
+                val handler = Handler(handlerThread.looper)
+                EpoxyController.defaultDiffingHandler = handler
+                EpoxyController.defaultModelBuildingHandler = handler
+
+                viewModel.listRefreshed()
+                moviesController.genres = movies.data
+                genresController.genres = movies.data
             }
         })
 
         viewModel.selectedGenre.observe(viewLifecycleOwner, { genrePosition ->
-            browse_recycler.smoothScrollToPosition(genrePosition)
+            binding.genresRecycler.smoothScrollToPosition(genrePosition)
+            // browse_recycler.smoothScrollToPosition(genrePosition)
         })
     }
 }

@@ -58,6 +58,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -140,7 +144,13 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$mockito_version"
     def mockito_kotlin_version = "2.2.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
-    testImplementation 'android.arch.core:core-testing:2.1.0'
+    testImplementation "android.arch.core:core-testing:$arch_version"
+
+    def epoxy_version = "4.0.0-beta6"
+    implementation "com.airbnb.android:epoxy:$epoxy_version"
+    implementation "com.airbnb.android:epoxy-databinding:$epoxy_version"
+    kapt "com.airbnb.android:epoxy-processor:$epoxy_version"
+
 
 
 }

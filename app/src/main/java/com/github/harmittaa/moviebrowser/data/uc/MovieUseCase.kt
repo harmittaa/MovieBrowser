@@ -15,7 +15,7 @@ class MovieUseCase(private val repository: Store<Int, List<Movie>>) {
         return flow {
             try {
                 val mapped = genres.map { genre ->
-                    genre.items = repository.fresh(genre.id)
+                    genre.movies = repository.fresh(genre.id)
                     genre
                 }
                 Timber.d("EMIT FROM USE CASE!")

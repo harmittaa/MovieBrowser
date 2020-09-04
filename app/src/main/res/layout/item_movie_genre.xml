@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Science Fiction" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/movies_recyclerview"
             android:layout_width="0dp"
             android:layout_height="match_parent"

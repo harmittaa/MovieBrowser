@@ -66,6 +66,6 @@ class BrowseViewModel(
     }
 
     fun listRefreshed() {
-        _selectedMovie.value = moviesOfCategory.value?.data?.first()?.items?.first()
+        _selectedMovie.value = moviesOfCategory.value?.data?.first()?.movies?.first()
     }
 }

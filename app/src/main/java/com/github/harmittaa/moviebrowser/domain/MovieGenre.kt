@@ -16,7 +16,7 @@ data class MovieGenreDto(
     fun toLocal() = MovieGenreLocal(
         id = id,
         name = name,
-        items = null
+        movies = null
     )
 }
 
@@ -24,5 +24,5 @@ data class MovieGenreDto(
 data class MovieGenreLocal(
     override val id: Int,
     override val name: String,
-    var items: List<Movie>?
+    var movies: List<Movie>?
 ) : MovieGenre()
