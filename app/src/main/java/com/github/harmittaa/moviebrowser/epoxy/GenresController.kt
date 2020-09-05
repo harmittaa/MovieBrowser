@@ -5,9 +5,11 @@ import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.carousel
 import com.github.harmittaa.moviebrowser.GenreBrowserBindingModel_
 import com.github.harmittaa.moviebrowser.browse.MovieClickListener
+import com.github.harmittaa.moviebrowser.domain.MovieGenre
 import com.github.harmittaa.moviebrowser.domain.MovieGenreLocal
 
 class GenresController(private val clickListener: MovieClickListener) : AsyncEpoxyController() {
+    private var selected: MovieGenre? = null
 
     var genres: List<MovieGenreLocal> = emptyList()
         set(value) {
@@ -20,7 +22,6 @@ class GenresController(private val clickListener: MovieClickListener) : AsyncEpo
             GenreBrowserBindingModel_().run {
                 id(it.id)
                 genre(it)
-                clickListener(clickListener)
             }
         }
 

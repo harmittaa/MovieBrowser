@@ -19,7 +19,6 @@ class MoviesController : AsyncEpoxyController(), StickyHeaderCallbacks {
         }
 
     override fun buildModels() {
-
         genres.forEach { genre ->
             val movieModels = genre.movies!!.map { movie ->
                 MovieBindingModel_().run {
