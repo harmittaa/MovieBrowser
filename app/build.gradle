@@ -56,6 +56,11 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8
         freeCompilerArgs += ["-Xopt-in=org.mylibrary.OptInAnnotation", "-Xopt-in=kotlin.RequiresOptIn"]
     }
+
+    configurations.all {
+        resolutionStrategy.force "org.antlr:antlr4-runtime:4.7.1"
+        resolutionStrategy.force "org.antlr:antlr4-tool:4.7.1"
+    }
 }
 
 dependencies {
@@ -136,8 +141,10 @@ dependencies {
     // testing
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
     def mockito_version = "3.3.1"
+
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.mockito:mockito-inline:$mockito_version"
+
     def mockito_kotlin_version = "2.2.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
     testImplementation 'android.arch.core:core-testing:2.1.0'
