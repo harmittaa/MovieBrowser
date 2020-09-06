@@ -40,10 +40,11 @@ class BrowseViewModel(
     private val _selectedMovie: MutableLiveData<Movie> = MutableLiveData()
     val selectedMovie: LiveData<Movie> = _selectedMovie
 
-    val moviesOfCategory = _genres.switchMap { genres ->
+    val moviesOfCategory: LiveData<Resource<List<Genre>>> = _genres.switchMap { genres ->
         if (genres is Resource.Loading || genres is Resource.Error) {
             return@switchMap liveData { emit(genres) }
         }
+
         movieUseCase.getMovies((genres as Resource.Success).data)
             .asLiveData(viewModelScope.coroutineContext)
     }
@@ -56,42 +57,10 @@ class BrowseViewModel(
     val selectedGenre: LiveData<Int> = _selectedGenre
 
     fun onCreateView() {
-/*
         viewModelScope.launch {
             _genres.value = Resource.Loading
             _genres.value = genreUseCase.getGenres()
         }
-*/
-
-        viewModelScope.launch {
-            val genre = GenreLocal(
-                123,
-                "genreName", null
-            )
-
-            val moviesList = listOf(MovieLocal(123, "MovieTitle", "overview", "url", "url", "5", listOf(123)))
-
-
-            db.genreDao().insertGenresMovies(genre, moviesList)
-
-            val genresMovies = db.genreDao().getGenreWithMovies(123)
-
-            db.genreDao().insertMovie(moviesList.first())
-            val movies = db.genreDao().getMovies()
-
-            db.genreDao().getGenreWithMovies(123).collect {
-                Timber.d("IT ! $it")
-            }
-
-
-
-
-
-
-            /*_genres.value = Resource.Loading
-            _genres.value = genreUseCase.getGenres()
-
-        }*/
     }
 
     override fun onMovieClicked(movie: Movie) {
@@ -103,7 +72,6 @@ class BrowseViewModel(
     }
 
     fun listRefreshed() {
-
         //_selectedMovie.value = moviesOfCategory.value?.data?.first()?.items?.first()
     }
 }

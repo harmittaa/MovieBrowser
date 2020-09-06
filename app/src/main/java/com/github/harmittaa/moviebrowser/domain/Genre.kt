@@ -14,16 +14,13 @@ data class GenreWithMovies(
     @Embedded val genre: GenreLocal,
     @Relation(
         parentColumn = "genreId",
-        entity = MovieLocal::class,
         entityColumn = "movieId",
-        associateBy = Junction(
-            GenreMovieCrossRef::class,
-            parentColumn = "genreId",
-            entityColumn = "movieId"
-            )
+        associateBy = Junction(GenreMovieCrossRef::class)
     )
-    val movies: List<MovieLocal> = emptyList()
-)
+    val movies: List<MovieLocal> = listOf()
+) {
+    constructor(genre: GenreLocal) : this(genre, listOf())
+}
 
 
 abstract class Genre {
@@ -54,6 +51,5 @@ data class GenreLocal(
     @Ignore
     override var items: List<Movie>? = null
 ) : Genre() {
-    constructor(genreId: Int, name: String) : this(genreId, name, null) {
-    }
+    constructor(genreId: Int, name: String) : this(genreId, name, null)
 }
