@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
 import com.github.harmittaa.moviebrowser.data.uc.MovieUseCase
 import com.github.harmittaa.moviebrowser.domain.Movie
-import com.github.harmittaa.moviebrowser.domain.MovieGenreLocal
+import com.github.harmittaa.moviebrowser.domain.GenreLocal
 import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 
 interface MovieClickListener {
     fun onMovieClicked(movie: Movie)
-    fun onGenreClicked(genre: MovieGenreLocal)
+    fun onGenreClicked(genre: GenreLocal)
 }
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
@@ -28,8 +28,8 @@ class BrowseViewModel(
     val movieUseCase: MovieUseCase
 ) : ViewModel(), MovieClickListener {
 
-    private val _genres: MutableLiveData<Resource<List<MovieGenreLocal>>> = MutableLiveData()
-    val genres: LiveData<Resource<List<MovieGenreLocal>>> = _genres
+    private val _genres: MutableLiveData<Resource<List<GenreLocal>>> = MutableLiveData()
+    val genres: LiveData<Resource<List<GenreLocal>>> = _genres
 
     private val _selectedMovie: MutableLiveData<Movie> = MutableLiveData()
     val selectedMovie: LiveData<Movie> = _selectedMovie
@@ -61,7 +61,7 @@ class BrowseViewModel(
         _selectedMovie.value = movie
     }
 
-    override fun onGenreClicked(genre: MovieGenreLocal) {
+    override fun onGenreClicked(genre: GenreLocal) {
         _selectedGenre.value = _genres.value?.data?.indexOf(genre)
     }
 

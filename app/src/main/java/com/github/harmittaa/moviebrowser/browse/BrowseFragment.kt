@@ -31,7 +31,7 @@ class BrowseFragment : Fragment() {
     ): View? {
         binding = FragmentBrowseBinding.inflate(inflater, container, false)
         genresController = GenresController(viewModel)
-        moviesController = MoviesController()
+        moviesController = MoviesController(viewModel)
         binding.apply {
             viewModel = this@BrowseFragment.viewModel
             lifecycleOwner = this@BrowseFragment.viewLifecycleOwner

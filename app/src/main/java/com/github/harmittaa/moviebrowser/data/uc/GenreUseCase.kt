@@ -6,7 +6,7 @@ import com.dropbox.android.external.store4.StoreBuilder
 import com.dropbox.android.external.store4.get
 import com.github.harmittaa.moviebrowser.data.MovieApi
 import com.github.harmittaa.moviebrowser.domain.Movie
-import com.github.harmittaa.moviebrowser.domain.MovieGenreLocal
+import com.github.harmittaa.moviebrowser.domain.GenreLocal
 import com.github.harmittaa.moviebrowser.network.Resource
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,7 +31,7 @@ object Repository {
             .build()
 }
 
-class GenreUseCase(val repository: Store<Any, List<MovieGenreLocal>>) {
+class GenreUseCase(val repository: Store<Any, List<GenreLocal>>) {
 
     suspend fun getGenres() =
         try {

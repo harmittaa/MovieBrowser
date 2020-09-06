@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
 import com.github.harmittaa.moviebrowser.data.uc.MovieUseCase
 import com.github.harmittaa.moviebrowser.domain.Movie
-import com.github.harmittaa.moviebrowser.domain.MovieGenreLocal
+import com.github.harmittaa.moviebrowser.domain.GenreLocal
 import com.github.harmittaa.moviebrowser.network.Resource
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.timeout
@@ -41,7 +41,7 @@ class BrowseViewModelTest {
     private val defaultTimeout = 5_00L
     private val errorString = "Error"
     private val movie: Movie = mock()
-    private val genre = MovieGenreLocal(123, "", listOf(movie))
+    private val genre = GenreLocal(123, "", listOf(movie))
     private val genres = listOf(genre)
     private val genresResource = Resource.Success(genres)
     private val errorResource = Resource.Error(errorString)
@@ -61,7 +61,7 @@ class BrowseViewModelTest {
     fun `test init, when viewModel is created then resource emits`() =
         runBlockingTest {
             whenever(genreUseCase.getGenres()).thenReturn(genresResource)
-            val observer: Observer<Resource<List<MovieGenreLocal>>> = mock()
+            val observer: Observer<Resource<List<GenreLocal>>> = mock()
 
             viewModel.genres.observeForever(observer)
             viewModel.onCreateView()
@@ -74,7 +74,7 @@ class BrowseViewModelTest {
     fun `test init, when genreUseCase throws error then error is emitted`() =
         runBlockingTest {
             whenever(genreUseCase.getGenres()).thenReturn(errorResource)
-            val observer: Observer<Resource<List<MovieGenreLocal>>> = mock()
+            val observer: Observer<Resource<List<GenreLocal>>> = mock()
 
             viewModel.genres.observeForever(observer)
             viewModel.onCreateView()
@@ -89,7 +89,7 @@ class BrowseViewModelTest {
 
             whenever(genreUseCase.getGenres()).thenReturn(genresResource)
             whenever(movieUseCase.getMovies(genres)).thenReturn(flowOf(genresResource))
-            val observer: Observer<Resource<List<MovieGenreLocal>>> = mock()
+            val observer: Observer<Resource<List<GenreLocal>>> = mock()
 
             viewModel.moviesOfCategory.observeForever(observer)
             viewModel.onCreateView()
@@ -101,7 +101,7 @@ class BrowseViewModelTest {
     fun `test init, when genres throws error then movies throws error`() =
         runBlockingTest {
             whenever(genreUseCase.getGenres()).thenReturn(errorResource)
-            val observer: Observer<Resource<List<MovieGenreLocal>>> = mock()
+            val observer: Observer<Resource<List<GenreLocal>>> = mock()
 
             viewModel.moviesOfCategory.observeForever(observer)
             viewModel.onCreateView()

@@ -8,7 +8,7 @@
 
         <variable
             name="genre"
-            type="com.github.harmittaa.moviebrowser.domain.MovieGenre" />
+            type="com.github.harmittaa.moviebrowser.domain.Genre" />
 
     </data>
 
