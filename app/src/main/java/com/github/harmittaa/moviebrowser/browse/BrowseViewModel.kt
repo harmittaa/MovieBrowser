@@ -45,6 +45,10 @@ class BrowseViewModel(
             return@switchMap liveData { emit(genres) }
         }
 
+        (genres as Resource.Success).data.forEach {
+                movieUseCase.justTesting(it)
+        }
+
         movieUseCase.getMovies((genres as Resource.Success).data)
             .asLiveData(viewModelScope.coroutineContext)
     }

@@ -1,9 +1,6 @@
 package com.github.harmittaa.moviebrowser.data.uc
 
-import com.dropbox.android.external.store4.Store
-import com.dropbox.android.external.store4.StoreRequest
-import com.dropbox.android.external.store4.fresh
-import com.dropbox.android.external.store4.get
+import com.dropbox.android.external.store4.*
 import com.github.harmittaa.moviebrowser.domain.Genre
 import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.domain.GenreLocal
@@ -25,6 +22,16 @@ class MovieUseCase(private val repository: Store<Genre, List<Movie>>) {
 
      */
 
+    fun getThemMovies(genres: List<Genre>) {
+        flowOf(genres).map {
+            it.forEach {
+                repository.stream(StoreRequest.cached(it, refresh = true)).collect {response ->
+                    response.requireData()
+                }
+            }
+        }
+    }
+
     fun getMovies(genres: List<Genre>): Flow<Resource<List<Genre>>> = flow {
         try {
             val mapped = genres.map { genre ->
@@ -35,7 +42,6 @@ class MovieUseCase(private val repository: Store<Genre, List<Movie>>) {
                         Timber.d("Genre items are $response.requireData()")
                         genre.items = response.requireData()
                     }
-
                 }
                 Timber.d("Genre completed $genre")
                 genre
@@ -48,9 +54,7 @@ class MovieUseCase(private val repository: Store<Genre, List<Movie>>) {
         }
     }
 
-    fun justTesting(genre: Genre) {
 
-        val resultt = repository.stream(StoreRequest.cached(genre, refresh = false))
-
-    }
+    fun justTesting(genre: Genre)  =
+        repository.stream(StoreRequest.cached(genre, refresh = true)).filterNot { it is StoreResponse.Loading }
 }
