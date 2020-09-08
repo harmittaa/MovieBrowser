@@ -17,14 +17,14 @@ class MovieBrowseAdapter(private val clickListener: MovieClickListener) :
 
     companion object : DiffUtil.ItemCallback<GenreLocal>() {
         override fun areItemsTheSame(oldItem: GenreLocal, newItem: GenreLocal): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.genreId == newItem.genreId
         }
 
         override fun areContentsTheSame(
             oldItem: GenreLocal,
             newItem: GenreLocal
         ): Boolean {
-            return oldItem.movies == newItem.movies
+            return oldItem.items == newItem.items
         }
     }
 
@@ -45,7 +45,7 @@ class MovieBrowseAdapter(private val clickListener: MovieClickListener) :
             genre: GenreLocal,
             adapter: MovieAdapter
         ) {
-            adapter.submitList(genre.movies)
+            adapter.submitList(genre.items)
             binding.apply {
                 this.moviesRecyclerview.adapter = adapter
                 this.moviesRecyclerview.setRecycledViewPool(viewPool)

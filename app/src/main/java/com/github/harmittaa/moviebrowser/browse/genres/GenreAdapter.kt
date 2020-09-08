@@ -14,14 +14,14 @@ class GenreAdapter(private val clickListener: MovieClickListener) :
 
     companion object : DiffUtil.ItemCallback<GenreLocal>() {
         override fun areItemsTheSame(oldItem: GenreLocal, newItem: GenreLocal): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.genreId == newItem.genreId
         }
 
         override fun areContentsTheSame(
             oldItem: GenreLocal,
             newItem: GenreLocal
         ): Boolean {
-            return oldItem.movies == newItem.movies
+            return oldItem.items == newItem.items
         }
     }
 
@@ -43,7 +43,7 @@ class GenreAdapter(private val clickListener: MovieClickListener) :
             clickListener: MovieClickListener
         ) {
             binding.apply {
-                this.genre = genre
+                this.genre = GenreLocal(genre.genreId, genre.name, emptyList())
                 this.clickListener = clickListener
             }
         }

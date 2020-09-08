@@ -15,7 +15,7 @@ class MovieAdapter(private val clickListener: MovieClickListener) : ListAdapter<
 
     companion object : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.movieId == newItem.movieId
         }
 
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {

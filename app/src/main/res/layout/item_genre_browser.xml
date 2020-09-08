@@ -7,7 +7,7 @@
 
         <variable
             name="genre"
-            type="com.github.harmittaa.moviebrowser.domain.GenreLocal" />
+            type="com.github.harmittaa.moviebrowser.domain.Genre" />
 
         <variable
             name="clickListener"
