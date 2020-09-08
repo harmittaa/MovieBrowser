@@ -17,7 +17,6 @@ abstract class Movie {
     fun getPosterPath() = "https://image.tmdb.org/t/p/w780/$posterUrl"
 }
 
-
 @JsonClass(generateAdapter = true)
 data class MovieDto(
     @Json(name = "id") val movieId: Int,

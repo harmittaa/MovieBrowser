@@ -35,7 +35,6 @@ internal class SiteLocalConverter {
 
  */
 
-
 class Converters {
     private val moshi: Moshi by KoinJavaComponent.inject(Moshi::class.java)
     private val listConverter: JsonAdapter<List<Int>>
@@ -49,5 +48,4 @@ class Converters {
 
     @TypeConverter
     fun toList(value: List<Int>) = listConverter.toJson(value)
-
 }

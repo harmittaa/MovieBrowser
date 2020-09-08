@@ -12,15 +12,12 @@ import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
 import com.github.harmittaa.moviebrowser.data.uc.MovieUseCase
 import com.github.harmittaa.moviebrowser.db.MovieDatabase
 import com.github.harmittaa.moviebrowser.domain.Genre
-import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.domain.GenreLocal
-import com.github.harmittaa.moviebrowser.domain.MovieLocal
+import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 interface MovieClickListener {
     fun onMovieClicked(movie: Movie)
@@ -43,10 +40,6 @@ class BrowseViewModel(
     val moviesOfCategory: LiveData<Resource<List<Genre>>> = _genres.switchMap { genres ->
         if (genres is Resource.Loading || genres is Resource.Error) {
             return@switchMap liveData { emit(genres) }
-        }
-
-        (genres as Resource.Success).data.forEach {
-                movieUseCase.justTesting(it)
         }
 
         movieUseCase.getMovies((genres as Resource.Success).data)
@@ -76,6 +69,6 @@ class BrowseViewModel(
     }
 
     fun listRefreshed() {
-        //_selectedMovie.value = moviesOfCategory.value?.data?.first()?.items?.first()
+        // _selectedMovie.value = moviesOfCategory.value?.data?.first()?.items?.first()
     }
 }

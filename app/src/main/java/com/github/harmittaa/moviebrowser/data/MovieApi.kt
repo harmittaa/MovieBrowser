@@ -1,6 +1,5 @@
 package com.github.harmittaa.moviebrowser.data
 
-import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.domain.GenreDto
 import com.github.harmittaa.moviebrowser.domain.MovieDto
 import retrofit2.http.GET

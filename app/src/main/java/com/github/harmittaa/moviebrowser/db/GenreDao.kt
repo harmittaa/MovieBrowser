@@ -1,13 +1,18 @@
 package com.github.harmittaa.moviebrowser.db
 
-import androidx.room.*
-import com.github.harmittaa.moviebrowser.domain.*
-import kotlinx.coroutines.GlobalScope
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
+import com.github.harmittaa.moviebrowser.domain.Genre
+import com.github.harmittaa.moviebrowser.domain.GenreLocal
+import com.github.harmittaa.moviebrowser.domain.GenreMovieCrossRef
+import com.github.harmittaa.moviebrowser.domain.GenreWithMovies
+import com.github.harmittaa.moviebrowser.domain.Movie
+import com.github.harmittaa.moviebrowser.domain.MovieLocal
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Dao
@@ -72,5 +77,4 @@ abstract class GenreDao {
 
     @Query("SELECT * FROM movie")
     abstract fun getMovies(): Flow<List<MovieLocal>>
-
 }
