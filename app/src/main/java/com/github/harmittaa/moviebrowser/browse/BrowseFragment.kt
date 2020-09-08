@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.airbnb.epoxy.EpoxyController
-import com.airbnb.epoxy.stickyheader.StickyHeaderLinearLayoutManager
 import com.github.harmittaa.moviebrowser.databinding.FragmentBrowseBinding
 import com.github.harmittaa.moviebrowser.epoxy.GenresController
 import com.github.harmittaa.moviebrowser.epoxy.MoviesController
@@ -36,8 +35,6 @@ class BrowseFragment : Fragment() {
             viewModel = this@BrowseFragment.viewModel
             lifecycleOwner = this@BrowseFragment.viewLifecycleOwner
             genresRecycler.setController(genresController)
-            moviesRecycler.layoutManager =
-                StickyHeaderLinearLayoutManager(this@BrowseFragment.requireContext())
             moviesRecycler.setController(moviesController)
         }
 

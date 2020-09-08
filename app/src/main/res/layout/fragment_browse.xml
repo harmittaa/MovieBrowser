@@ -17,6 +17,7 @@
         android:background="@color/background"
         tools:context=".browse.BrowseFragment">
 
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
@@ -25,153 +26,140 @@
             android:scaleType="centerCrop"
             android:src="@color/non_selection_item"
             app:imageUrl="@{viewModel.selectedMovie}"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="0dp" />
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/backgroundOpac"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@drawable/shadow_gradient"
-            app:layout_constraintBottom_toTopOf="@id/guideline"
-            app:layout_constraintTop_toTopOf="@id/movie_title_spacer" />
-
-        <Space
-            android:id="@+id/movie_title_spacer"
-            android:layout_width="1dp"
-            android:layout_height="30dp"
-            app:layout_constraintBottom_toTopOf="@id/movie_title"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/movie_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_16"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="@{viewModel.selectedMovie.title}"
-            android:textColor="@color/selection_white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/movie_rating"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Project Power" />
-
-        <ImageView
-            android:id="@+id/browse_item_star"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_4"
-            android:contentDescription="@string/star"
-            android:src="@drawable/ic_star"
-            app:layout_constraintBottom_toTopOf="@id/guideline"
-            app:layout_constraintEnd_toEndOf="@id/movie_title"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/movie_title"
-            app:visibleGone="@{!viewModel.showLoading.booleanValue()}" />
-
-        <TextView
-            android:id="@+id/movie_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_4"
-            android:layout_marginTop="1dp"
-            android:text="@{viewModel.selectedMovie.rating}"
-            android:textColor="@color/selection_white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/browse_item_star"
-            app:layout_constraintStart_toEndOf="@id/browse_item_star"
-            app:layout_constraintTop_toTopOf="@id/browse_item_star"
-            app:layout_constraintVertical_bias="1.0"
-            tools:text="6.9" />
-
-        <ImageView
-            android:id="@+id/movie_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_8"
-            android:contentDescription="@string/info"
-            android:src="@drawable/ic_info"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/movie_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/movie_title" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideline" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.33" />
-
-        <com.airbnb.epoxy.EpoxyRecyclerView
-            android:id="@+id/genres_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="@dimen/margin_4"
-            android:orientation="horizontal"
-            android:clipChildren="false"
-            app:layout_constraintBottom_toTopOf="@id/guideline2"
-            app:layout_constraintTop_toBottomOf="@id/guideline"
-            tools:listitem="@layout/item_genre_browser" />
-
+            app:layout_constraintGuide_percent="0.7" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.42" />
+            app:layout_constraintGuide_percent="0.4" />
+
+        <com.airbnb.epoxy.EpoxyRecyclerView
+            android:id="@+id/genres_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_8"
+            android:background="@color/background"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_genre_browser" />
 
         <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/movies_recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="@dimen/margin_4"
             android:clipChildren="false"
-            android:orientation="vertical"
+            android:clipToPadding="false"
+            android:paddingTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline2"
-            tools:listitem="@layout/item_movie" />
-
-        <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-            android:id="@+id/browse_progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_4"
-            android:indeterminate="true"
             app:layout_constraintTop_toBottomOf="@id/genres_recycler"
-            app:spb_color="@color/non_selection_genre"
-            app:spb_mirror_mode="false"
-            app:spb_progressiveStart_activated="true"
-            app:spb_progressiveStart_speed="1.5"
-            app:spb_progressiveStop_speed="3.4"
-            app:spb_reversed="false"
-            app:spb_sections_count="4"
-            app:spb_speed="2.0"
-            app:spb_stroke_separator_length="4dp"
-            app:spb_stroke_width="4dp"
-            app:visibleGone="@{viewModel.showLoading.booleanValue()}" />
+            tools:listitem="@layout/item_movie_card_horizontal" />
 
-        <!--
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/browse_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/margin_4"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/browse_progress_bar"
-                    tools:itemCount="9"
-                    tools:listitem="@layout/item_movie_genre" />
-        -->
+        <View
+            android:id="@+id/recyclers_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/shadow_gradient_reverse"
+            app:layout_constraintTop_toBottomOf="@id/genres_recycler" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--
+
+                    <Space
+                android:id="@+id/movie_title_spacer"
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                app:layout_constraintBottom_toTopOf="@id/movie_title"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/movie_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{viewModel.selectedMovie.title}"
+                android:textColor="@color/selection_white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/movie_rating"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Project Power" />
+
+            <ImageView
+                android:id="@+id/browse_item_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                android:contentDescription="@string/star"
+                android:src="@drawable/ic_star"
+                app:layout_constraintBottom_toTopOf="@id/guideline"
+                app:layout_constraintEnd_toEndOf="@id/movie_title"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/movie_title"
+                app:visibleGone="@{!viewModel.showLoading.booleanValue()}" />
+
+            <TextView
+                android:id="@+id/movie_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_4"
+                android:layout_marginTop="1dp"
+                android:text="@{viewModel.selectedMovie.rating}"
+                android:textColor="@color/selection_white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/browse_item_star"
+                app:layout_constraintStart_toEndOf="@id/browse_item_star"
+                app:layout_constraintTop_toTopOf="@id/browse_item_star"
+                app:layout_constraintVertical_bias="1.0"
+                tools:text="6.9" />
+
+            <ImageView
+                android:id="@+id/movie_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:contentDescription="@string/info"
+                android:src="@drawable/ic_info"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/movie_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/movie_title" />
+
+    -->
 </layout>

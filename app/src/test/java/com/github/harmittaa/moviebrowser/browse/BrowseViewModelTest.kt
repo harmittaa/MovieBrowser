@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
 import com.github.harmittaa.moviebrowser.data.uc.MovieUseCase
-import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.domain.GenreLocal
+import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.network.Resource
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.timeout

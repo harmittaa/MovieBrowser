@@ -139,7 +139,7 @@ dependencies {
 
     // testing
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-    def mockito_version = "3.3.1"
+    def mockito_version = "3.4.0"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.mockito:mockito-inline:$mockito_version"
     def mockito_kotlin_version = "2.2.0"
@@ -151,6 +151,12 @@ dependencies {
     implementation "com.airbnb.android:epoxy-databinding:$epoxy_version"
     kapt "com.airbnb.android:epoxy-processor:$epoxy_version"
 
+    def viewpager_version = "1.0.0"
+    implementation "androidx.viewpager2:viewpager2:$viewpager_version"
 
+    def material_version = "1.3.0-alpha02"
+    implementation "com.google.android.material:material:$material_version"
 
+    def gravity_snap_helper_version = "2.2.1"
+    implementation "com.github.rubensousa:gravitysnaphelper:$gravity_snap_helper_version"
 }

@@ -10,8 +10,8 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
 import com.github.harmittaa.moviebrowser.data.uc.MovieUseCase
-import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.domain.GenreLocal
+import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

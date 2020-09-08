@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/browseFragment">
+    app:startDestination="@id/pagerFragment">
 
     <fragment
-        android:id="@+id/browseFragment"
-        android:name="com.github.harmittaa.moviebrowser.browse.BrowseFragment"
-        android:label="fragment_browse"
-        tools:layout="@layout/fragment_browse" />
+        android:id="@+id/pagerFragment"
+        android:name="com.github.harmittaa.moviebrowser.browse.pager.PagerFragment"
+        android:label="fragment_pager"
+        tools:layout="@layout/fragment_pager" />
 </navigation>
