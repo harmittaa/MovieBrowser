@@ -24,7 +24,7 @@ class MovieBrowseAdapter(private val clickListener: MovieClickListener) :
             oldItem: GenreLocal,
             newItem: GenreLocal
         ): Boolean {
-            return oldItem.items == newItem.items
+            return oldItem == newItem
         }
     }
 
@@ -45,7 +45,7 @@ class MovieBrowseAdapter(private val clickListener: MovieClickListener) :
             genre: GenreLocal,
             adapter: MovieAdapter
         ) {
-            adapter.submitList(genre.items)
+            // adapter.submitList(genre.items)
             binding.apply {
                 this.moviesRecyclerview.adapter = adapter
                 this.moviesRecyclerview.setRecycledViewPool(viewPool)

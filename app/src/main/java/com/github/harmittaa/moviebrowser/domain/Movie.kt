@@ -19,14 +19,14 @@ abstract class Movie {
 
 @JsonClass(generateAdapter = true)
 data class MovieDto(
-    @Json(name = "id") val movieId: Int,
-    val title: String,
-    val overview: String,
-    @Json(name = "backdrop_path") val backdropUrl: String,
-    @Json(name = "poster_path") val posterUrl: String,
-    @Json(name = "vote_average") val rating: String,
-    @Json(name = "genre_ids") val genreIds: List<Int>
-) {
+    @Json(name = "id") override val movieId: Int,
+    override val title: String,
+    override val overview: String,
+    @Json(name = "backdrop_path") override val backdropUrl: String,
+    @Json(name = "poster_path") override val posterUrl: String,
+    @Json(name = "vote_average") override val rating: String,
+    @Json(name = "genre_ids") override val genreIds: List<Int>
+) : Movie() {
     fun toLocal() = MovieLocal(
         movieId = movieId,
         title = title,

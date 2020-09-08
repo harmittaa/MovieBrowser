@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/item_movie_height"
             android:background="@drawable/movie_background"
-            android:onClick="@{() -> clickListener.onMovieClicked(movie)}">
+            android:onClick="@{(v) -> clickListener.onMovieClicked(v, movie)}">
 
             <TextView
                 android:id="@+id/item_movie_title"

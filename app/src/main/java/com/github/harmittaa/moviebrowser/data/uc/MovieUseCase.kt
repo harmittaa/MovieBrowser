@@ -2,76 +2,58 @@ package com.github.harmittaa.moviebrowser.data.uc
 
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest
+import com.dropbox.android.external.store4.StoreResponse
 import com.dropbox.android.external.store4.get
 import com.github.harmittaa.moviebrowser.domain.Genre
 import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.network.Resource
+import java.lang.Exception
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.transform
 import timber.log.Timber
 
-class MovieUseCase(private val repository: Store<Genre, List<Movie>>) {
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+class MovieUseCase(private val repository: Store<List<Genre>, List<Movie>>) {
 
-/*
-    fun getMovies(genres: List<GenreLocal>): Flow<Resource<List<GenreLocal>>> {
-        return flow {
-            try {
-                val mapped = genres.map { genre ->
-                    genre.movies = repository.fresh(genre.id)
-                    genre
-                }
-                Timber.d("EMIT FROM USE CASE!")
-                emit(Resource.Success(mapped))
-            }
-        } catch (e: Exception) {
-            Timber.e("Failed to $e")
-            emit(Resource.Error(e))
+    fun getMovies(selectedGenres: List<Genre>) = flow {
+        getRepoFlow(selectedGenres)?.collect {
+            Timber.d("DEBUG: EMITTINg $it")
+            emit(it)
         }
     }
 
-    fun getMoviesChanged(genres: List<Genre>): Flow<Resource<List<Genre>>> = flow {
-        try {
-            val mapped = genres.map { genre ->
-                repository.stream(StoreRequest.cached(genre, refresh = true)).collect { response ->
-                    if (response.dataOrNull() == null) {
-                        Timber.d("STILL NULL")
-                    } else {
-                        Timber.d("Genre items are $response.requireData()")
-                        genre.movies = response.requireData()
-                    }
-                }
-                Timber.d("Genre completed $genre")
-                genre
-            }
-            Timber.d("EMIT FROM USE CASE!")
-            emit(Resource.Success(mapped))
-        } catch (e: Exception) {
-            Timber.e("Failed to $e")
-            emit(Resource.Error(e))
-        }
-    }
-*/
+    private fun getRepoFlow(selectedGenres: List<Genre>): Flow<Resource<List<Movie>>>? {
 
-    fun getMoviesChanged(genres: List<Genre>): Flow<Resource<List<Genre>>> = flow {
         try {
-            val mapped = genres.map { genre ->
-                repository.stream(StoreRequest.cached(genre, refresh = true)).collect { response ->
-                    if (response.dataOrNull() == null) {
-                        Timber.d("STILL NULL")
-                    } else {
-                        Timber.d("Genre items are $response.requireData()")
-                        genre.items = response.requireData()
+
+            val repoStream = repository.stream(
+                StoreRequest.cached(
+                    emptyList(), refresh = true
+                )
+            ).onEach { Timber.d("DEBUG: ON EACH $it") }.transform { response ->
+                Timber.d("DEBUG: Transform store response $response")
+                when (response) {
+                    is StoreResponse.Loading -> emit(Resource.Loading)
+                    is StoreResponse.Error -> emit(
+                        Resource.Error(
+                            response.errorMessageOrNull() ?: "Unknown error"
+                        )
+                    )
+                    is StoreResponse.Data -> emit(Resource.Success(response.value))
+                    else -> {
+                        Timber.d("ASDASDASD $response")
                     }
                 }
-                Timber.d("Genre completed $genre")
-                genre
             }
-            Timber.d("EMIT FROM USE CASE!")
-            emit(Resource.Success(mapped))
+            return repoStream
         } catch (e: Exception) {
-            Timber.e("Failed to $e")
-            emit(Resource.Error(e))
+            Timber.d("EEEEE $e")
         }
+        return null
     }
 }

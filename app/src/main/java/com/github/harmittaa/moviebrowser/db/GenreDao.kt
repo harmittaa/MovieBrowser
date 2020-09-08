@@ -10,6 +10,7 @@ import com.github.harmittaa.moviebrowser.domain.GenreLocal
 import com.github.harmittaa.moviebrowser.domain.GenreMovieCrossRef
 import com.github.harmittaa.moviebrowser.domain.GenreWithMovies
 import com.github.harmittaa.moviebrowser.domain.Movie
+import com.github.harmittaa.moviebrowser.domain.MovieDto
 import com.github.harmittaa.moviebrowser.domain.MovieLocal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -18,63 +19,66 @@ import timber.log.Timber
 @Dao
 abstract class GenreDao {
 
-    fun getGenresMovies(genre: Genre): Flow<List<Movie>> {
-        val result = getGenreWithMovies(genre.genreId)
+    fun getMoviesOfGenres(genres: List<Genre>): Flow<List<Movie>?> =
+        if (genres.isEmpty()) {
+            getAllMovies()
+        } else {
+            queryMoviesOfGenres(genres.map { it.genreId }).map { genresWithMovies ->
+                val movies = mutableListOf<Movie>()
 
-        val movieFlow = result.map {
-            if (it == null) {
-                Timber.d("Reading with $genre results in null result")
-                emptyList()
-            } else {
-                it.movies
+                genresWithMovies?.forEach { movies + (it?.movies ?: emptyList()) }
+
+                if (movies.isEmpty()) {
+                    null
+                } else {
+                    movies
+                }
             }
         }
-        return movieFlow
+
+    @Transaction
+    open suspend fun insertGenresMovies(genre: List<Genre>, movies: List<Movie>) {
+        Timber.d("Storing data $genre with $movies")
+
+        val crossRefs = mutableListOf<GenreMovieCrossRef>()
+        val toLocalMapped = (movies as List<MovieDto>).map {
+            crossRefs.add(GenreMovieCrossRef(123, 123))
+            it.toLocal()
+        }
+
+        insertGenreMovieCrossRefs(*crossRefs.toTypedArray())
+        insertMovies(*toLocalMapped.toTypedArray())
+    }
+
+    suspend fun deleteMoviesOfGenre(genres: List<Genre>) {
+        deleteMoviesOfGenreIds(genres.map { it.genreId })
     }
 
     @Transaction
-    open suspend fun insertGenresMovies(genre: Genre, movies: List<Movie>) {
-        Timber.d("Storing data $genre with $movies")
-        insertGenre(GenreLocal(genre.genreId, genre.name))
-        movies.forEach {
-            insertMovie(
-                MovieLocal(
-                    it.movieId,
-                    it.title,
-                    it.overview,
-                    it.backdropUrl,
-                    it.posterUrl,
-                    it.rating,
-                    it.genreIds
-                )
-            )
-            insertCrossRef(GenreMovieCrossRef(genre.genreId, it.movieId))
-        }
-    }
+    @Query("SELECT * FROM genre WHERE genreId IN (:genreId)")
+    abstract fun queryMoviesOfGenres(genreId: List<Int>): Flow<List<GenreWithMovies?>?>
 
-    suspend fun deleteGenre(genre: Genre) {
-        deleteMoviesOfGenre(genre.genreId)
-    }
+    @Query("DELETE FROM movie WHERE genreIds IN (:genreId)")
+    protected abstract suspend fun deleteMoviesOfGenreIds(genreId: List<Int>)
 
-    @Query("DELETE FROM genre WHERE genreId = :genreId")
-    abstract suspend fun deleteMoviesOfGenre(genreId: Int)
+    @Query("SELECT * FROM movie")
+    abstract fun getAllMovies(): Flow<List<MovieLocal>>
 
-    @Query("DELETE FROM genre")
+    @Query("DELETE FROM movie")
     abstract suspend fun deleteAll()
 
-    @Transaction
-    @Query("SELECT * FROM genre WHERE genreId = :genreId")
-    abstract fun getGenreWithMovies(genreId: Int): Flow<GenreWithMovies?>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertGenre(genre: GenreLocal)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertMovie(movie: MovieLocal)
+    abstract suspend fun insertMovies(vararg movies: MovieLocal)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertCrossRef(crossRef: GenreMovieCrossRef)
 
-    @Query("SELECT * FROM movie")
-    abstract fun getMovies(): Flow<List<MovieLocal>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertGenreMovieCrossRefs(vararg lists: GenreMovieCrossRef)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun insertGenres(vararg genres: GenreLocal)
+
+    @Query("SELECT * FROM genre")
+    abstract fun getGenres(): Flow<List<GenreLocal>>
 }

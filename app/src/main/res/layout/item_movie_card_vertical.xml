@@ -25,7 +25,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="200dp"
             android:layout_height="300dp"
-            android:onClick="@{() -> clickListener.onMovieClicked(movie)}">
+            android:onClick="@{(v) -> clickListener.onMovieClicked(v, movie)}">
 
             <ImageView
                 android:layout_width="match_parent"
