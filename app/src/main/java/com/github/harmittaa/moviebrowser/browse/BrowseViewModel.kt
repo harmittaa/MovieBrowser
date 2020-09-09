@@ -37,7 +37,8 @@ class BrowseViewModel(
 
     private val selectedGenres = getDefaultGenreList()
 
-    private val _genres: LiveData<List<Genre>> = genreUseCase.getGenres().asLiveData(viewModelScope.coroutineContext)
+    private val _genres: LiveData<List<Genre>> =
+        genreUseCase.getGenres().asLiveData(viewModelScope.coroutineContext)
     val genres: LiveData<List<Genre>> = _genres
 
     private val _selectedMovie: MutableLiveData<Movie> = MutableLiveData()
@@ -66,6 +67,9 @@ class BrowseViewModel(
     }
 
     fun listRefreshed() {
+        if (moviesOfCategory.value != null || !moviesOfCategory.value?.data.isNullOrEmpty()) {
+            return
+        }
         _selectedMovie.value = moviesOfCategory.value?.data?.first()
     }
 

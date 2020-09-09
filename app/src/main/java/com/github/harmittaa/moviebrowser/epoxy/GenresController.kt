@@ -31,6 +31,7 @@ class GenresController(private val clickListener: MovieClickListener) : AsyncEpo
 
                     override fun onGenreClicked(view: View, genre: Genre) {
                         Timber.d("CLIIGK $view")
+                        view.isSelected = true
                     }
                 })
             }
