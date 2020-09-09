@@ -29,8 +29,8 @@ abstract class GenreDao {
                 val movies = mutableSetOf<Movie>()
 
                 genresWithMovies?.forEach { movies.addAll(it?.movies ?: emptyList()) }
-                var filteredMovies = movies.filter { it.genreIds.containsAll(genreIds) }
-                filteredMovies = filteredMovies.sortedByDescending { it.rating }
+                val filteredMovies = movies.filter { it.genreIds.containsAll(genreIds) }
+                    .sortedByDescending { it.rating }
 
                 if (movies.isEmpty()) {
                     null

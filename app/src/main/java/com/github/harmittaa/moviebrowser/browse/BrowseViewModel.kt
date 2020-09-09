@@ -6,6 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
@@ -45,6 +46,10 @@ class BrowseViewModel(
 
     val moviesOfCategory: LiveData<Resource<List<Movie>>> = genreInputFilter.switchMap { genres ->
         movieUseCase.getMovies(genres).asLiveData(viewModelScope.coroutineContext)
+    }
+
+    val showLoading: LiveData<Boolean> = moviesOfCategory.map {
+        it == Resource.Loading
     }
 
     private val _selectedGenre: MutableLiveData<List<Genre>> = MutableLiveData()
@@ -111,4 +116,8 @@ class BrowseViewModel(
         19752 to "War",
         37 to "Western"
     )
+
+    fun clearFilters() {
+        selectedGenres.value = mutableSetOf()
+    }
 }

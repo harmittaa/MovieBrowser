@@ -17,6 +17,26 @@
         android:background="@color/background"
         tools:context=".browse.BrowseFragment">
 
+        <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+            android:id="@+id/browse_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toTopOf="@id/genres_recycler"
+            app:layout_constraintTop_toTopOf="parent"
+            app:spb_color="@color/non_selection_genre"
+            app:spb_mirror_mode="false"
+            app:spb_progressiveStart_activated="true"
+            app:spb_progressiveStart_speed="1.5"
+            app:spb_progressiveStop_speed="3.4"
+            app:spb_reversed="false"
+            app:spb_sections_count="4"
+            app:spb_speed="2.0"
+            app:spb_stroke_separator_length="4dp"
+            app:spb_stroke_width="4dp"
+            app:visibleInvisible="@{viewModel.showLoading.booleanValue()}" />
+
         <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/genres_recycler"
             android:layout_width="0dp"
@@ -24,7 +44,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/browse_progress_bar" />
 
         <com.airbnb.epoxy.EpoxyRecyclerView
             android:id="@+id/movies_recycler"
@@ -36,7 +56,21 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/genres_recycler"
+            app:visibleGone="@{viewModel.moviesOfCategory.data.size() > 0}"
             tools:listitem="@layout/item_movie_card_horizontal" />
+
+
+        <TextView
+            android:id="@+id/clear_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Looks like there were no items! Click to clear filters"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibleGone="@{!viewModel.showLoading.booleanValue() &amp;&amp; viewModel.moviesOfCategory.data.size() == 0}" />
 
         <View
             android:id="@+id/recyclers_shadow"

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.github.harmittaa.moviebrowser.databinding.FragmentBrowseBinding
 import com.github.harmittaa.moviebrowser.epoxy.GenresController
@@ -36,6 +37,10 @@ class BrowseFragment : Fragment() {
 
         bindViewModel()
         viewModel.onCreateView()
+        binding.clearFilters.setOnClickListener {
+            genresController.selectedGenres = mutableSetOf()
+            viewModel.clearFilters()
+        }
         return binding.root
     }
 
@@ -46,8 +51,13 @@ class BrowseFragment : Fragment() {
         })
 
         viewModel.moviesOfCategory.observe(viewLifecycleOwner, { movies ->
-            if (movies is Resource.Success) {
-                moviesController.movies = movies.data
+            when (movies) {
+                is Resource.Success -> moviesController.movies = movies.data
+                is Resource.Error -> Toast.makeText(
+                    requireContext(),
+                    "Error! ${movies.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
