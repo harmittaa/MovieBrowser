@@ -26,4 +26,10 @@ object BindingAdapters {
         Timber.d("visibleGone($view, $show)")
         view.visibility = if (show) View.VISIBLE else View.GONE
     }
+
+    @JvmStatic
+    @BindingAdapter("setSelected")
+    fun setSelected(view: View, selected: Boolean) {
+        view.isSelected = selected
+    }
 }

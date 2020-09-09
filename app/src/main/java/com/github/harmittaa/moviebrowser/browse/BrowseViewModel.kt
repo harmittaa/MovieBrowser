@@ -2,10 +2,10 @@ package com.github.harmittaa.moviebrowser.browse
 
 import android.view.View
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
@@ -18,13 +18,10 @@ import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 interface MovieClickListener {
-    fun onMovieClicked(view: View, movie: Movie)
     fun onGenreClicked(view: View, genre: Genre)
 }
 
@@ -35,42 +32,62 @@ class BrowseViewModel(
     val db: MovieDatabase
 ) : ViewModel(), MovieClickListener {
 
-    private val selectedGenres = getDefaultGenreList()
-
     private val _genres: LiveData<List<Genre>> =
         genreUseCase.getGenres().asLiveData(viewModelScope.coroutineContext)
     val genres: LiveData<List<Genre>> = _genres
 
+    private val selectedGenres: MutableLiveData<MutableSet<Genre>> = MutableLiveData()
+
+    private val genreInputFilter = MediatorLiveData<List<Genre>>()
+
     private val _selectedMovie: MutableLiveData<Movie> = MutableLiveData()
     val selectedMovie: LiveData<Movie> = _selectedMovie
 
-    val moviesOfCategory: LiveData<Resource<List<Movie>>> = _genres.switchMap { genres ->
+    val moviesOfCategory: LiveData<Resource<List<Movie>>> = genreInputFilter.switchMap { genres ->
         movieUseCase.getMovies(genres).asLiveData(viewModelScope.coroutineContext)
-    }
-
-    val showLoading: LiveData<Boolean> = moviesOfCategory.map {
-        it == Resource.Loading
     }
 
     private val _selectedGenre: MutableLiveData<List<Genre>> = MutableLiveData()
     val selectedGenre: LiveData<List<Genre>> = _selectedGenre
 
+    init {
+        genreInputFilter.addSource(_genres) {
+            Timber.d("Mediator added genres! $it")
+            if (_genres.value?.size ?: 0 != getDefaultGenreList().size) {
+                genreInputFilter.value = it
+            } else {
+                if (genreInputFilter.value == null) {
+                    genreInputFilter.value = emptyList()
+                }
+            }
+        }
+        genreInputFilter.addSource(selectedGenres) {
+            Timber.d("Mediator selected genres! $it")
+            genreInputFilter.value = it.toList()
+        }
+    }
+
+    override fun onGenreClicked(view: View, genre: Genre) {
+        val list = selectedGenres.value ?: mutableSetOf()
+        val addResult = list.add(genre)
+        if (!addResult) {
+            list.remove(genre)
+        }
+        selectedGenres.value = list
+    }
+
     fun onCreateView() {
         prepopulateDB()
     }
 
-    override fun onMovieClicked(view: View, movie: Movie) {
-        _selectedMovie.value = movie
-    }
-
-    override fun onGenreClicked(view: View, genre: Genre) {
-    }
-
-    fun listRefreshed() {
-        if (moviesOfCategory.value != null || !moviesOfCategory.value?.data.isNullOrEmpty()) {
-            return
+    private fun prepopulateDB() {
+        val genresList = mutableListOf<GenreLocal>()
+        getDefaultGenreList().forEach { (id, name) ->
+            genresList.add(GenreLocal(id, name))
         }
-        _selectedMovie.value = moviesOfCategory.value?.data?.first()
+        viewModelScope.launch(Dispatchers.IO) {
+            db.genreDao().insertGenres(*genresList.toTypedArray())
+        }
     }
 
     private fun getDefaultGenreList() = mapOf(
@@ -94,24 +111,4 @@ class BrowseViewModel(
         19752 to "War",
         37 to "Western"
     )
-
-    private fun prepopulateDB() {
-        val genresList = mutableListOf<GenreLocal>()
-        getDefaultGenreList().forEach { id, name ->
-            genresList.add(GenreLocal(id, name))
-        }
-/*
-        viewModelScope.launch(Dispatchers.IO) {
-            db.genreDao().insertGenres(*genresList.toTypedArray())
-        }
-*/
-    }
-
-    fun onGenresFetched() {
-        viewModelScope.launch(Dispatchers.IO) {
-            movieUseCase.getMovies(_genres.value!!).flowOn(Dispatchers.IO).collect {
-                Timber.d("DEBUG: ON VM $it")
-            }
-        }
-    }
 }

@@ -11,7 +11,6 @@ import com.github.harmittaa.moviebrowser.epoxy.MoviesController
 import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 class BrowseFragment : Fragment() {
@@ -27,7 +26,7 @@ class BrowseFragment : Fragment() {
     ): View? {
         binding = FragmentBrowseBinding.inflate(inflater, container, false)
         genresController = GenresController(viewModel)
-        moviesController = MoviesController(viewModel)
+        moviesController = MoviesController()
         binding.apply {
             viewModel = this@BrowseFragment.viewModel
             lifecycleOwner = this@BrowseFragment.viewLifecycleOwner
@@ -42,23 +41,14 @@ class BrowseFragment : Fragment() {
 
     private fun bindViewModel() {
         viewModel.genres.observe(viewLifecycleOwner, { genres ->
+            moviesController.genres = genres
             genresController.genres = genres
-            if (!genres.isEmpty()) {
-                viewModel.onGenresFetched()
-            }
         })
 
         viewModel.moviesOfCategory.observe(viewLifecycleOwner, { movies ->
             if (movies is Resource.Success) {
-                Timber.d("viewModel.moviesOfCategory.observe!")
-                viewModel.listRefreshed()
                 moviesController.movies = movies.data
             }
-        })
-
-        viewModel.selectedGenre.observe(viewLifecycleOwner, { genrePosition ->
-            // binding.genresRecycler.smoothScrollToPosition(genrePosition)
-            // browse_recycler.smoothScrollToPosition(genrePosition)
         })
     }
 }

@@ -27,7 +27,7 @@ data class GenreWithMovies(
         entityColumn = "movieId",
         associateBy = Junction(GenreMovieCrossRef::class)
     )
-    val movies: List<MovieLocal> = listOf()
+    val movies: List<MovieLocal>
 )
 
 @JsonClass(generateAdapter = true)

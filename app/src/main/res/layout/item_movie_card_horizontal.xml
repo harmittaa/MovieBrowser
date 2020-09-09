@@ -8,11 +8,6 @@
         <variable
             name="movie"
             type="com.github.harmittaa.moviebrowser.domain.Movie" />
-
-        <variable
-            name="clickListener"
-            type="com.github.harmittaa.moviebrowser.browse.MovieClickListener" />
-
     </data>
 
     <androidx.cardview.widget.CardView
@@ -26,16 +21,15 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:onClick="@{(v) -> clickListener.onMovieClicked(v, movie)}">
+            android:layout_height="200dp">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/movie_poster"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{movie}"
                 tools:src="@tools:sample/backgrounds/scenic" />
-
 
             <View
                 android:layout_width="match_parent"
@@ -51,19 +45,31 @@
                 app:layout_constraintBottom_toTopOf="@id/movie_card_title"
                 app:layout_constraintStart_toStartOf="parent" />
 
-
             <TextView
                 android:id="@+id/movie_card_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16"
+                android:layout_marginHorizontal="@dimen/margin_16"
                 android:maxLines="3"
                 android:text="@{movie.title}"
+                android:textColor="@color/selection_white"
+                app:layout_constraintBottom_toTopOf="@id/movie_rating"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="The Lord of the Rings: The Two Towers" />
+
+            <TextView
+                android:id="@+id/movie_rating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_16"
+                android:maxLines="3"
+                android:text="@{movie.rating}"
                 android:textColor="@color/selection_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="The Lord of the Rings: The Two Towers" />
+                tools:text="8.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

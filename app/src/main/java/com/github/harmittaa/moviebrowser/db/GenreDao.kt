@@ -14,36 +14,44 @@ import com.github.harmittaa.moviebrowser.domain.MovieDto
 import com.github.harmittaa.moviebrowser.domain.MovieLocal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 
 @Dao
 abstract class GenreDao {
 
     fun getMoviesOfGenres(genres: List<Genre>): Flow<List<Movie>?> =
         if (genres.isEmpty()) {
-            getAllMovies()
+            getAllMovies().map { movieList ->
+                movieList.sortedByDescending { it.rating }
+            }
         } else {
-            queryMoviesOfGenres(genres.map { it.genreId }).map { genresWithMovies ->
-                val movies = mutableListOf<Movie>()
+            val genreIds = genres.map { it.genreId }
+            queryMoviesOfGenres(genreIds).map { genresWithMovies ->
+                val movies = mutableSetOf<Movie>()
 
-                genresWithMovies?.forEach { movies + (it?.movies ?: emptyList()) }
+                genresWithMovies?.forEach { movies.addAll(it?.movies ?: emptyList()) }
+                var filteredMovies = movies.filter { it.genreIds.containsAll(genreIds) }
+                filteredMovies = filteredMovies.sortedByDescending { it.rating }
 
                 if (movies.isEmpty()) {
                     null
                 } else {
-                    movies
+                    filteredMovies
                 }
             }
         }
 
     @Transaction
-    open suspend fun insertGenresMovies(genre: List<Genre>, movies: List<Movie>) {
-        Timber.d("Storing data $genre with $movies")
+    open suspend fun insertGenresMovies(genre: List<Genre>, movies: List<MovieDto>) {
 
         val crossRefs = mutableListOf<GenreMovieCrossRef>()
-        val toLocalMapped = (movies as List<MovieDto>).map {
-            crossRefs.add(GenreMovieCrossRef(123, 123))
+        val toLocalMapped = movies.map {
             it.toLocal()
+        }
+
+        toLocalMapped.forEach { movie ->
+            movie.genreIds.forEach { genreId ->
+                crossRefs.add(GenreMovieCrossRef(genreId, movie.movieId))
+            }
         }
 
         insertGenreMovieCrossRefs(*crossRefs.toTypedArray())
@@ -58,14 +66,14 @@ abstract class GenreDao {
     @Query("SELECT * FROM genre WHERE genreId IN (:genreId)")
     abstract fun queryMoviesOfGenres(genreId: List<Int>): Flow<List<GenreWithMovies?>?>
 
-    @Query("DELETE FROM movie WHERE genreIds IN (:genreId)")
-    protected abstract suspend fun deleteMoviesOfGenreIds(genreId: List<Int>)
-
     @Query("SELECT * FROM movie")
     abstract fun getAllMovies(): Flow<List<MovieLocal>>
 
     @Query("DELETE FROM movie")
     abstract suspend fun deleteAll()
+
+    @Query("DELETE FROM movie WHERE genreIds IN (:genreId)")
+    protected abstract suspend fun deleteMoviesOfGenreIds(genreId: List<Int>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertMovies(vararg movies: MovieLocal)

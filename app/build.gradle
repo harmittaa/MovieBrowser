@@ -165,4 +165,7 @@ dependencies {
 
     def gravity_snap_helper_version = "2.2.1"
     implementation "com.github.rubensousa:gravitysnaphelper:$gravity_snap_helper_version"
+
+    implementation 'com.wajahatkarim3:roomexplorer:0.0.2'
+
 }

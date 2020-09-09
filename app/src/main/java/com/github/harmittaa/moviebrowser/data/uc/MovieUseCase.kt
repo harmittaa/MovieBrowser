@@ -3,7 +3,6 @@ package com.github.harmittaa.moviebrowser.data.uc
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest
 import com.dropbox.android.external.store4.StoreResponse
-import com.dropbox.android.external.store4.get
 import com.github.harmittaa.moviebrowser.domain.Genre
 import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.network.Resource
@@ -13,7 +12,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.transform
 import timber.log.Timber
 
@@ -22,21 +21,17 @@ class MovieUseCase(private val repository: Store<List<Genre>, List<Movie>>) {
 
     fun getMovies(selectedGenres: List<Genre>) = flow {
         getRepoFlow(selectedGenres)?.collect {
-            Timber.d("DEBUG: EMITTINg $it")
             emit(it)
         }
     }
 
     private fun getRepoFlow(selectedGenres: List<Genre>): Flow<Resource<List<Movie>>>? {
-
         try {
-
-            val repoStream = repository.stream(
+            return repository.stream(
                 StoreRequest.cached(
-                    emptyList(), refresh = true
+                    selectedGenres, refresh = true
                 )
-            ).onEach { Timber.d("DEBUG: ON EACH $it") }.transform { response ->
-                Timber.d("DEBUG: Transform store response $response")
+            ).transform { response ->
                 when (response) {
                     is StoreResponse.Loading -> emit(Resource.Loading)
                     is StoreResponse.Error -> emit(
@@ -45,15 +40,11 @@ class MovieUseCase(private val repository: Store<List<Genre>, List<Movie>>) {
                         )
                     )
                     is StoreResponse.Data -> emit(Resource.Success(response.value))
-                    else -> {
-                        Timber.d("ASDASDASD $response")
-                    }
                 }
             }
-            return repoStream
         } catch (e: Exception) {
-            Timber.d("EEEEE $e")
+            Timber.d("Exception thrown from repo $e")
+            return flowOf(Resource.Error(e.message ?: "Unknown error"))
         }
-        return null
     }
 }
