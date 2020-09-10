@@ -5,6 +5,7 @@ import com.github.harmittaa.moviebrowser.browse.di.viewModelModule
 import com.github.harmittaa.moviebrowser.data.di.storeRepositoryModule
 import com.github.harmittaa.moviebrowser.data.di.useCaseModule
 import com.github.harmittaa.moviebrowser.db.di.databaseModule
+import com.github.harmittaa.moviebrowser.epoxy.di.epoxyModule
 import com.github.harmittaa.moviebrowser.network.networkModule
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,7 +27,16 @@ class MovieBrowserApplication : Application() {
         Timber.plant(Timber.DebugTree())
         startKoin {
             androidContext(this@MovieBrowserApplication)
-            modules(listOf(networkModule, viewModelModule, storeRepositoryModule, useCaseModule, databaseModule))
+            modules(
+                listOf(
+                    networkModule,
+                    viewModelModule,
+                    storeRepositoryModule,
+                    useCaseModule,
+                    databaseModule,
+                    epoxyModule
+                )
+            )
         }
     }
 }

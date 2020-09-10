@@ -13,16 +13,13 @@ import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
 import com.github.harmittaa.moviebrowser.data.uc.MovieUseCase
 import com.github.harmittaa.moviebrowser.db.MovieDatabase
 import com.github.harmittaa.moviebrowser.domain.Genre
-import com.github.harmittaa.moviebrowser.domain.GenreLocal
 import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.network.Resource
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
-interface MovieClickListener {
+interface GenreClickListener {
     fun onGenreClicked(view: View, genre: Genre)
 }
 
@@ -31,7 +28,7 @@ class BrowseViewModel(
     val genreUseCase: GenreUseCase,
     val movieUseCase: MovieUseCase,
     val db: MovieDatabase
-) : ViewModel(), MovieClickListener {
+) : ViewModel(), GenreClickListener {
 
     private val _genres: LiveData<List<Genre>> =
         genreUseCase.getGenres().asLiveData(viewModelScope.coroutineContext)
@@ -58,7 +55,7 @@ class BrowseViewModel(
     init {
         genreInputFilter.addSource(_genres) {
             Timber.d("Mediator added genres! $it")
-            if (_genres.value?.size ?: 0 != getDefaultGenreList().size) {
+            if (_genres.value?.size ?: 0 != 19) {
                 genreInputFilter.value = it
             } else {
                 if (genreInputFilter.value == null) {
@@ -80,42 +77,6 @@ class BrowseViewModel(
         }
         selectedGenres.value = list
     }
-
-    fun onCreateView() {
-        prepopulateDB()
-    }
-
-    private fun prepopulateDB() {
-        val genresList = mutableListOf<GenreLocal>()
-        getDefaultGenreList().forEach { (id, name) ->
-            genresList.add(GenreLocal(id, name))
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            db.genreDao().insertGenres(*genresList.toTypedArray())
-        }
-    }
-
-    private fun getDefaultGenreList() = mapOf(
-        28 to "Action",
-        12 to "Adventure",
-        16 to "Animation",
-        35 to "Comedy",
-        80 to "Crime",
-        99 to "Documentary",
-        18 to "Drama",
-        1075 to "Family",
-        14 to "Fantasy",
-        36 to "History",
-        27 to "Horror",
-        10402 to "Music",
-        9648 to "Mystery",
-        10749 to "Romance",
-        878 to "Science Fiction",
-        10770 to "TV Movie",
-        53 to "Thriller",
-        19752 to "War",
-        37 to "Western"
-    )
 
     fun clearFilters() {
         selectedGenres.value = mutableSetOf()

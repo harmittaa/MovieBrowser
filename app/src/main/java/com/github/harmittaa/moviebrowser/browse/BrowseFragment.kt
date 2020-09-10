@@ -11,13 +11,14 @@ import com.github.harmittaa.moviebrowser.epoxy.GenresController
 import com.github.harmittaa.moviebrowser.epoxy.MoviesController
 import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalCoroutinesApi
 class BrowseFragment : Fragment() {
     private val viewModel: BrowseViewModel by viewModel()
-    private lateinit var genresController: GenresController
-    private lateinit var moviesController: MoviesController
+    private val genresController: GenresController by inject()
+    private val moviesController: MoviesController by inject()
     private lateinit var binding: FragmentBrowseBinding
 
     override fun onCreateView(
@@ -26,8 +27,7 @@ class BrowseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentBrowseBinding.inflate(inflater, container, false)
-        genresController = GenresController(viewModel)
-        moviesController = MoviesController()
+        genresController.clickListener = viewModel
         binding.apply {
             viewModel = this@BrowseFragment.viewModel
             lifecycleOwner = this@BrowseFragment.viewLifecycleOwner
@@ -36,7 +36,6 @@ class BrowseFragment : Fragment() {
         }
 
         bindViewModel()
-        viewModel.onCreateView()
         binding.clearFilters.setOnClickListener {
             genresController.selectedGenres = mutableSetOf()
             viewModel.clearFilters()
