@@ -1,14 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".browse.BrowseFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.github.harmittaa.moviebrowser.browse.BrowseViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/background"
+        tools:context=".browse.BrowseFragment">
 
-</FrameLayout>
+        <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+            android:id="@+id/browse_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_4"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toTopOf="@id/genres_recycler"
+            app:layout_constraintTop_toTopOf="parent"
+            app:spb_color="@color/non_selection_genre"
+            app:spb_mirror_mode="false"
+            app:spb_progressiveStart_activated="true"
+            app:spb_progressiveStart_speed="1.5"
+            app:spb_progressiveStop_speed="3.4"
+            app:spb_reversed="false"
+            app:spb_sections_count="4"
+            app:spb_speed="2.0"
+            app:spb_stroke_separator_length="4dp"
+            app:spb_stroke_width="4dp"
+            app:visibleInvisible="@{viewModel.showLoading.booleanValue()}" />
+
+        <com.airbnb.epoxy.EpoxyRecyclerView
+            android:id="@+id/genres_recycler"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/browse_progress_bar" />
+
+        <com.airbnb.epoxy.EpoxyRecyclerView
+            android:id="@+id/movies_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingTop="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/genres_recycler"
+            app:visibleGone="@{viewModel.moviesOfCategory.data.size() > 0}"
+            tools:listitem="@layout/item_movie_card_horizontal" />
+
+
+        <TextView
+            android:id="@+id/clear_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Looks like there were no items! Click to clear filters"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibleGone="@{!viewModel.showLoading.booleanValue() &amp;&amp; viewModel.moviesOfCategory.data.size() == 0}" />
+
+        <View
+            android:id="@+id/recyclers_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/shadow_gradient_reverse"
+            app:layout_constraintTop_toBottomOf="@id/genres_recycler" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

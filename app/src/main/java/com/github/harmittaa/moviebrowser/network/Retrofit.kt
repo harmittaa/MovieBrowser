@@ -1,6 +1,7 @@
 package com.github.harmittaa.moviebrowser.network
 
 import com.github.harmittaa.moviebrowser.BuildConfig
+import com.github.harmittaa.moviebrowser.data.MovieApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.Interceptor
@@ -12,12 +13,21 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 val networkModule = module {
     single { provideLoggingInterceptor() }
+    factory { AuthInterceptor() }
     single { provideOkHttpClient(authInterceptor = get(), loggingInterceptor = get()) }
 
     single { provideMoshi() }
     factory { provideMoshiConverterFactory(moshi = get()) }
 
     single { provideRetrofit(okHttpClient = get(), moshiConverterFactory = get()) }
+
+    single { provideMovieApi(retrofit = get()) }
+}
+
+fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+    val logger = HttpLoggingInterceptor()
+    logger.level = HttpLoggingInterceptor.Level.BODY
+    return logger
 }
 
 fun provideRetrofit(
@@ -31,7 +41,7 @@ fun provideRetrofit(
         .build()
 }
 
-fun provideMoshi(): Moshi {
+private fun provideMoshi(): Moshi {
     return Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
@@ -41,7 +51,7 @@ private fun provideMoshiConverterFactory(moshi: Moshi): MoshiConverterFactory {
     return MoshiConverterFactory.create(moshi)
 }
 
-fun provideOkHttpClient(
+private fun provideOkHttpClient(
     authInterceptor: AuthInterceptor,
     loggingInterceptor: HttpLoggingInterceptor
 ): OkHttpClient {
@@ -49,14 +59,11 @@ fun provideOkHttpClient(
         .addInterceptor(loggingInterceptor).build()
 }
 
-fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-    val logger = HttpLoggingInterceptor()
-    logger.level = HttpLoggingInterceptor.Level.BASIC
-    return logger
-}
+private fun provideMovieApi(retrofit: Retrofit): MovieApi = retrofit.create(MovieApi::class.java)
 
-class AuthInterceptor : Interceptor {
+private class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain) = chain.proceed(
-        chain.request().newBuilder().addHeader("api_key", BuildConfig.TMDB_KEY).build()
+        chain.request().newBuilder().addHeader("Authorization", "Bearer ${BuildConfig.TMDB_KEY}")
+            .build()
     )
 }

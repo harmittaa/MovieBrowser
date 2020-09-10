@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="genre"
+            type="com.github.harmittaa.moviebrowser.domain.Genre" />
+
+        <variable
+            name="clickListener"
+            type="com.github.harmittaa.moviebrowser.browse.GenreClickListener" />
+
+        <variable
+            name="isSelected"
+            type="Boolean" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/genre_height"
+        app:setSelected="@{isSelected}"
+        android:background="@drawable/genre_rounded_corners"
+        android:onClick="@{() -> clickListener.onGenreClicked(genre)}">
+
+        <TextView
+            android:id="@+id/genre_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="16dp"
+            android:text="@{genre.name}"
+            android:textColor="@color/selection_white"
+            tools:text="Science Fiction" />
+
+    </LinearLayout>
+</layout>
