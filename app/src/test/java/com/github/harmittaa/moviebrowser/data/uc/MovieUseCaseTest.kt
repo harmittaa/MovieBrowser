@@ -45,9 +45,9 @@ class MovieUseCaseTest {
         useCase = MovieUseCase(repository = repository)
     }
 
-    @Ignore("Failing coroutine mocks")
     @Test
-    private fun `test getMovies when repository throws an error then Error resource is returned`() =
+    @Ignore("Failing coroutine mocks")
+    fun `test getMovies when repository throws an error then Error resource is returned`() =
         runBlockingTest {
             val fetcher: FakeFetcher<List<Genre>, List<Movie>> = mock()
             val persister: FakePersister<List<Genre>, List<Movie>, List<Movie>> = mock()
