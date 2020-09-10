@@ -37,7 +37,6 @@ class BrowseFragment : Fragment() {
 
         bindViewModel()
         binding.clearFilters.setOnClickListener {
-            genresController.selectedGenres = mutableSetOf()
             viewModel.clearFilters()
         }
         return binding.root
@@ -46,6 +45,10 @@ class BrowseFragment : Fragment() {
     private fun bindViewModel() {
         viewModel.genres.observe(viewLifecycleOwner, { genres ->
             genresController.genres = genres
+        })
+
+        viewModel.selectedGenres.observe(viewLifecycleOwner, { genres ->
+            genresController.selectedGenres = genres
         })
 
         viewModel.moviesOfCategory.observe(viewLifecycleOwner, { movies ->

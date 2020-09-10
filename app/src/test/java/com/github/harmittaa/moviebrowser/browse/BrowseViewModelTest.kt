@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
 import com.github.harmittaa.moviebrowser.data.uc.MovieUseCase
+import com.github.harmittaa.moviebrowser.domain.Genre
 import com.github.harmittaa.moviebrowser.domain.GenreLocal
 import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.network.Resource
@@ -38,7 +39,7 @@ class BrowseViewModelTest {
     private val defaultTimeout = 5_00L
     private val errorString = "Error"
     private val movie: Movie = mock()
-    private val genre = GenreLocal(123, "", listOf(movie))
+    private val genre: Genre = GenreLocal(123, "genre name")
     private val genres = listOf(genre)
     private val genresResource = Resource.Success(genres)
     private val errorResource = Resource.Error(errorString)

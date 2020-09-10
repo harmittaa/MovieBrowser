@@ -17,7 +17,6 @@ import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import timber.log.Timber
 
 interface GenreClickListener {
     fun onGenreClicked(view: View, genre: Genre)
@@ -34,7 +33,10 @@ class BrowseViewModel(
         genreUseCase.getGenres().asLiveData(viewModelScope.coroutineContext)
     val genres: LiveData<List<Genre>> = _genres
 
-    private val selectedGenres: MutableLiveData<MutableSet<Genre>> = MutableLiveData()
+    private val shouldFetchSites: MutableLiveData<Unit> = MutableLiveData()
+
+    private val _selectedGenres: MutableLiveData<MutableSet<Genre>> = MutableLiveData()
+    val selectedGenres: LiveData<MutableSet<Genre>> = _selectedGenres
 
     private val genreInputFilter = MediatorLiveData<List<Genre>>()
 
@@ -53,18 +55,11 @@ class BrowseViewModel(
     val selectedGenre: LiveData<List<Genre>> = _selectedGenre
 
     init {
-        genreInputFilter.addSource(_genres) {
-            Timber.d("Mediator added genres! $it")
-            if (_genres.value?.size ?: 0 != 19) {
-                genreInputFilter.value = it
-            } else {
-                if (genreInputFilter.value == null) {
-                    genreInputFilter.value = emptyList()
-                }
-            }
+        genreInputFilter.addSource(shouldFetchSites) {
+            genreInputFilter.value = emptyList()
         }
+        shouldFetchSites.value = Unit
         genreInputFilter.addSource(selectedGenres) {
-            Timber.d("Mediator selected genres! $it")
             genreInputFilter.value = it.toList()
         }
     }
@@ -75,10 +70,10 @@ class BrowseViewModel(
         if (!addResult) {
             list.remove(genre)
         }
-        selectedGenres.value = list
+        _selectedGenres.value = list
     }
 
     fun clearFilters() {
-        selectedGenres.value = mutableSetOf()
+        _selectedGenres.value = mutableSetOf()
     }
 }

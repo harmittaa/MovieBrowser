@@ -35,13 +35,7 @@ class GenresController : AsyncEpoxyController() {
 
                 this.clickListener(object : GenreClickListener {
                     override fun onGenreClicked(view: View, genre: Genre) {
-                        val addSucceeded = selectedGenres.add(genre)
-                        view.isSelected = addSucceeded
-                        if (!addSucceeded) {
-                            selectedGenres.remove(genre)
-                        }
                         this@GenresController.clickListener.onGenreClicked(view, genre)
-                        requestModelBuild()
                     }
                 })
             }
