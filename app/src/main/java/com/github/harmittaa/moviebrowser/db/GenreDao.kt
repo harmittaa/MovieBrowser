@@ -33,7 +33,7 @@ abstract class GenreDao {
                     .sortedByDescending { it.rating }
 
                 if (movies.isEmpty()) {
-                    null
+                    emptyList()
                 } else {
                     filteredMovies
                 }
