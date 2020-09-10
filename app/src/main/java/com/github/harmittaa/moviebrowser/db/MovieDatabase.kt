@@ -10,7 +10,11 @@ import com.github.harmittaa.moviebrowser.domain.MovieLocal
 private const val DB_VERSION = 1
 const val DB_NAME = "MOVIE_APP_DB"
 
-@Database(entities = [GenreLocal::class, MovieLocal::class, GenreMovieCrossRef::class], version = DB_VERSION)
+@Database(
+    entities = [GenreLocal::class, MovieLocal::class, GenreMovieCrossRef::class],
+    version = DB_VERSION,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun genreDao(): GenreDao

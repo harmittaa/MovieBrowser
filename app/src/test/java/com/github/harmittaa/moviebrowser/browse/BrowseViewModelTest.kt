@@ -52,8 +52,6 @@ class BrowseViewModelTest {
     private var movieUseCase: MovieUseCase = mock()
     private lateinit var viewModel: BrowseViewModel
 
-    @ExperimentalCoroutinesApi
-    @ObsoleteCoroutinesApi
     @Before
     fun setUp() {
         Dispatchers.setMain(mainThreadSurrogate)
@@ -171,8 +169,6 @@ class BrowseViewModelTest {
         verify(observer, timeout(defaultTimeout)).onChanged(errorResource)
     }
 
-    @ObsoleteCoroutinesApi
-    @ExperimentalCoroutinesApi
     @After
     fun tearDown() {
         Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher

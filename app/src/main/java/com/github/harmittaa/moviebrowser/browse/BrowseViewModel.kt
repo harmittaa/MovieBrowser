@@ -22,7 +22,7 @@ interface GenreClickListener {
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class BrowseViewModel(
-    private val genreUseCase: GenreUseCase,
+    genreUseCase: GenreUseCase,
     private val movieUseCase: MovieUseCase
 ) : ViewModel(), GenreClickListener {
 
