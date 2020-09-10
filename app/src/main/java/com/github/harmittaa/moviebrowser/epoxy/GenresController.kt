@@ -1,6 +1,5 @@
 package com.github.harmittaa.moviebrowser.epoxy
 
-import android.view.View
 import com.airbnb.epoxy.AsyncEpoxyController
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.carousel
@@ -34,8 +33,8 @@ class GenresController : AsyncEpoxyController() {
                 isSelected(selectedGenres.contains(it))
 
                 this.clickListener(object : GenreClickListener {
-                    override fun onGenreClicked(view: View, genre: Genre) {
-                        this@GenresController.clickListener.onGenreClicked(view, genre)
+                    override fun onGenreClicked(genre: Genre) {
+                        this@GenresController.clickListener.onGenreClicked(genre)
                     }
                 })
             }

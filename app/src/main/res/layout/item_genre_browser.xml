@@ -25,7 +25,7 @@
         android:layout_height="@dimen/genre_height"
         app:setSelected="@{isSelected}"
         android:background="@drawable/genre_rounded_corners"
-        android:onClick="@{(v) -> clickListener.onGenreClicked(v, genre)}">
+        android:onClick="@{() -> clickListener.onGenreClicked(genre)}">
 
         <TextView
             android:id="@+id/genre_header"

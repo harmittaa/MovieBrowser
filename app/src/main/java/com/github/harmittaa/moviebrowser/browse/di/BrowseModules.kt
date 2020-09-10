@@ -6,5 +6,5 @@ import org.koin.dsl.module
 
 @ExperimentalCoroutinesApi
 val viewModelModule = module {
-    factory { BrowseViewModel(genreUseCase = get(), movieUseCase = get(), get()) }
+    factory { BrowseViewModel(genreUseCase = get(), movieUseCase = get()) }
 }

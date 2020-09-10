@@ -3,14 +3,12 @@ package com.github.harmittaa.moviebrowser.data.uc
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.dropbox.android.external.store4.Store
 import com.github.harmittaa.moviebrowser.domain.Movie
-import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -36,9 +34,11 @@ class MovieUseCaseTest {
     @ObsoleteCoroutinesApi
     @Before
     fun setUp() {
+/*
         Dispatchers.setMain(mainThreadSurrogate)
         repository = mock()
         useCase = MovieUseCase(repository = repository)
+*/
     }
 
     @Test
