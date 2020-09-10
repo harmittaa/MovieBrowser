@@ -1,7 +1,9 @@
 package com.github.harmittaa.moviebrowser.data.uc
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.github.harmittaa.moviebrowser.data.repository.GenreRepository
 import com.github.harmittaa.moviebrowser.domain.Genre
+import com.github.harmittaa.moviebrowser.domain.uc.GenreUseCase
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers

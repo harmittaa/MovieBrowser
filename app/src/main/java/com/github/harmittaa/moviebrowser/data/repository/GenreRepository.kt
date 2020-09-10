@@ -1,6 +1,6 @@
-package com.github.harmittaa.moviebrowser.data.uc
+package com.github.harmittaa.moviebrowser.data.repository
 
-import com.github.harmittaa.moviebrowser.db.MovieDatabase
+import com.github.harmittaa.moviebrowser.data.db.MovieDatabase
 import com.github.harmittaa.moviebrowser.domain.Genre
 import kotlinx.coroutines.flow.Flow
 

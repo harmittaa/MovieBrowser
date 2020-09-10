@@ -1,4 +1,4 @@
-package com.github.harmittaa.moviebrowser.epoxy
+package com.github.harmittaa.moviebrowser.browse.controllers
 
 import com.airbnb.epoxy.AsyncEpoxyController
 import com.airbnb.epoxy.Carousel

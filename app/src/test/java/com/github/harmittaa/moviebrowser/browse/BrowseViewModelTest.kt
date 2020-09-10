@@ -2,11 +2,11 @@ package com.github.harmittaa.moviebrowser.browse
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.github.harmittaa.moviebrowser.data.uc.GenreUseCase
-import com.github.harmittaa.moviebrowser.data.uc.MovieUseCase
 import com.github.harmittaa.moviebrowser.domain.Genre
 import com.github.harmittaa.moviebrowser.domain.GenreLocal
 import com.github.harmittaa.moviebrowser.domain.Movie
+import com.github.harmittaa.moviebrowser.domain.uc.GenreUseCase
+import com.github.harmittaa.moviebrowser.domain.uc.MovieUseCase
 import com.github.harmittaa.moviebrowser.network.Resource
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock

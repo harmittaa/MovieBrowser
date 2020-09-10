@@ -1,4 +1,4 @@
-package com.github.harmittaa.moviebrowser.data.uc
+package com.github.harmittaa.moviebrowser.domain.uc
 
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreRequest

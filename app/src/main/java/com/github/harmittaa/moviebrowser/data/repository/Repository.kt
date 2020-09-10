@@ -1,11 +1,11 @@
-package com.github.harmittaa.moviebrowser.data.uc
+package com.github.harmittaa.moviebrowser.data.repository
 
 import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
 import com.dropbox.android.external.store4.Store
 import com.dropbox.android.external.store4.StoreBuilder
 import com.github.harmittaa.moviebrowser.data.MovieApi
-import com.github.harmittaa.moviebrowser.db.MovieDatabase
+import com.github.harmittaa.moviebrowser.data.db.MovieDatabase
 import com.github.harmittaa.moviebrowser.domain.Genre
 import com.github.harmittaa.moviebrowser.domain.Movie
 import kotlin.time.ExperimentalTime

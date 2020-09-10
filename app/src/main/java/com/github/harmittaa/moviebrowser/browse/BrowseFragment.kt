@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.github.harmittaa.moviebrowser.browse.controllers.GenresController
+import com.github.harmittaa.moviebrowser.browse.controllers.MoviesController
 import com.github.harmittaa.moviebrowser.databinding.FragmentBrowseBinding
-import com.github.harmittaa.moviebrowser.epoxy.GenresController
-import com.github.harmittaa.moviebrowser.epoxy.MoviesController
 import com.github.harmittaa.moviebrowser.network.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject

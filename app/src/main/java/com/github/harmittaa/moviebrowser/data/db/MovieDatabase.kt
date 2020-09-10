@@ -1,4 +1,4 @@
-package com.github.harmittaa.moviebrowser.db
+package com.github.harmittaa.moviebrowser.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

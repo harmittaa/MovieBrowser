@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
         <activity
-            android:name="com.github.harmittaa.moviebrowser.MainActivity"
+            android:name="com.github.harmittaa.moviebrowser.browse.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

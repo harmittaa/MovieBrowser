@@ -2,9 +2,9 @@ package com.github.harmittaa.moviebrowser.application
 
 import android.app.Application
 import com.github.harmittaa.moviebrowser.browse.di.viewModelModule
+import com.github.harmittaa.moviebrowser.data.db.di.databaseModule
 import com.github.harmittaa.moviebrowser.data.di.storeRepositoryModule
 import com.github.harmittaa.moviebrowser.data.di.useCaseModule
-import com.github.harmittaa.moviebrowser.db.di.databaseModule
 import com.github.harmittaa.moviebrowser.epoxy.di.epoxyModule
 import com.github.harmittaa.moviebrowser.network.networkModule
 import kotlin.time.ExperimentalTime

@@ -1,8 +1,9 @@
-package com.github.harmittaa.moviebrowser
+package com.github.harmittaa.moviebrowser.browse
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.github.harmittaa.moviebrowser.db.MovieDatabase
+import com.github.harmittaa.moviebrowser.R
+import com.github.harmittaa.moviebrowser.data.db.MovieDatabase
 import com.github.harmittaa.moviebrowser.domain.GenreLocal
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
