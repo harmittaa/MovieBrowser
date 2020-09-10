@@ -6,13 +6,13 @@ apply from: "$project.rootDir/spotless.gradle"
 
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "30.0.1"
 
     defaultConfig {
         applicationId "com.github.harmittaa.moviebrowser"
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -116,7 +116,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     def recycler_view_version = "1.2.0-alpha05"
-    implementation "androidx.recyclerview:recyclerview:1.2.0-alpha05"
+    implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
 
     def retrofit_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

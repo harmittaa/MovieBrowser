@@ -4,21 +4,14 @@ import com.airbnb.epoxy.AsyncEpoxyController
 import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.carousel
 import com.github.harmittaa.moviebrowser.MovieCardVerticalBindingModel_
-import com.github.harmittaa.moviebrowser.domain.Genre
 import com.github.harmittaa.moviebrowser.domain.Movie
 import com.github.harmittaa.moviebrowser.movieCardHorizontal
 
 private const val TOP_ITEM_COUNT = 5
 
-class MoviesController() : AsyncEpoxyController() {
+class MoviesController : AsyncEpoxyController() {
 
     var movies: List<Movie> = emptyList()
-        set(value) {
-            field = value
-            requestModelBuild()
-        }
-
-    var genres: List<Genre> = emptyList()
         set(value) {
             field = value
             requestModelBuild()

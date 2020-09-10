@@ -7,9 +7,7 @@
 
     <color name="selection_white">#F4F4F4</color>
     <color name="non_selection_genre">#888888</color>
-    <color name="non_selection_item">#323232</color>
     <color name="background">#121212</color>
-    <color name="backgroundOpac">#DD121212</color>
     <color name="background_highlighted">#2E2E2E</color>
     <color name="item_background">#323232</color>
 </resources>

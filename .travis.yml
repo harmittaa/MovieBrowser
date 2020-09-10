@@ -21,8 +21,8 @@ before_install:
 android:
   components:
     - build-tools-30.0.1
-    - android-29
-    - sys-img-x86-android-29
+    - android-30
+    - sys-img-x86-android-30
   licenses:
     - 'android-sdk-preview-license-52d11cd2'
     - 'android-sdk-license-.+'

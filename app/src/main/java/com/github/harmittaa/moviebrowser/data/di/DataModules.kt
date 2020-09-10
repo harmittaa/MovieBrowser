@@ -15,7 +15,7 @@ val useCaseModule = module {
     single { GenreRepository(database = get()) }
 }
 
-val storeRepositoryModule = module() {
+val storeRepositoryModule = module {
     loadKoinModules(databaseModule)
     single(named("movieRepo")) { Repository.provideMovieRepository(api = get(), db = get()) }
 }

@@ -18,5 +18,5 @@ class Converters {
     fun fromList(value: String) = listConverter.fromJson(value)
 
     @TypeConverter
-    fun toList(value: List<Int>) = listConverter.toJson(value)
+    fun toList(value: List<Int>): String = listConverter.toJson(value)
 }

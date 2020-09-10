@@ -16,7 +16,9 @@ abstract class Genre {
 
 @Entity(primaryKeys = ["genreId", "movieId"])
 data class GenreMovieCrossRef(
+    @ColumnInfo(index = true)
     val genreId: Int,
+    @ColumnInfo(index = true)
     val movieId: Int
 )
 

@@ -1,5 +1,6 @@
 package com.github.harmittaa.moviebrowser.domain
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
@@ -40,6 +41,7 @@ data class MovieDto(
 
 @Entity(tableName = "movie")
 data class MovieLocal(
+    @ColumnInfo(index = true)
     @PrimaryKey
     override val movieId: Int,
     override val title: String,

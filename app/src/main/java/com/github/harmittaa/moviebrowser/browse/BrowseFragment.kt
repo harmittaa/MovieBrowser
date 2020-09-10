@@ -46,18 +46,20 @@ class BrowseFragment : Fragment() {
 
     private fun bindViewModel() {
         viewModel.genres.observe(viewLifecycleOwner, { genres ->
-            moviesController.genres = genres
             genresController.genres = genres
         })
 
         viewModel.moviesOfCategory.observe(viewLifecycleOwner, { movies ->
             when (movies) {
                 is Resource.Success -> moviesController.movies = movies.data
-                is Resource.Error -> Toast.makeText(
-                    requireContext(),
-                    "Error! ${movies.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                is Resource.Error -> {
+                    moviesController.movies = emptyList()
+                    Toast.makeText(
+                        requireContext(),
+                        "Error! ${movies.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         })
     }
